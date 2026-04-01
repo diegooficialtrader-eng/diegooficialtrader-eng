@@ -9,796 +9,142 @@
 body[data-theme='dark']{--bg:#060907;--panel:#0c1410;--panel2:#101a15;--panel3:#14211b;--line:rgba(16,185,129,.18);--line2:rgba(255,255,255,.08);--text:#f4f4f5;--soft:#d4d4d8;--muted:#8b8b93;--accent:#34d399;--accent2:#6ee7b7;--danger:#f87171;--warn:#f59e0b;--info:#38bdf8;--chip:rgba(255,255,255,.04);--input:#0a120e;--overlay:rgba(0,0,0,.74)}
 body[data-theme='light']{--bg:#f7faf8;--panel:#fff;--panel2:#fbfefd;--panel3:#f2faf5;--line:rgba(16,185,129,.16);--line2:rgba(15,23,42,.08);--text:#0f172a;--soft:#334155;--muted:#64748b;--accent:#059669;--accent2:#047857;--danger:#dc2626;--warn:#d97706;--info:#0284c7;--chip:#f8fafc;--input:#fff;--overlay:rgba(15,23,42,.28);--shadow:0 24px 72px rgba(2,6,23,.08)}
 body[data-theme='graphite']{--bg:#0a0f18;--panel:#121a26;--panel2:#162131;--panel3:#182536;--line:rgba(96,165,250,.18);--line2:rgba(255,255,255,.08);--text:#eef2ff;--soft:#cbd5e1;--muted:#94a3b8;--accent:#60a5fa;--accent2:#93c5fd;--danger:#fb7185;--warn:#fbbf24;--info:#22d3ee;--chip:rgba(255,255,255,.03);--input:#0f172a;--overlay:rgba(2,6,23,.72)}
-*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}body{background:radial-gradient(circle at top right,rgba(16,185,129,.08),transparent 22%),radial-gradient(circle at top left,rgba(56,189,248,.06),transparent 18%),var(--bg)}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{max-width:1600px;margin:0 auto;padding:18px}.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px}.sidebar,.hero,.view,.modal,.viewer{border:1px solid var(--line);background:var(--panel);border-radius:24px;box-shadow:var(--shadow)}.sidebar{padding:18px;position:sticky;top:18px;height:max-content;background:var(--panel2)}.brand{display:flex;gap:12px;align-items:center;margin-bottom:24px}.logo{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 74%, transparent),color-mix(in srgb,var(--info) 70%, transparent));color:#02130c;font-size:28px;font-weight:800}.brandName{font-size:24px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.brandSub,.muted,.helper{color:var(--muted)}.brandSub,.eyebrow,.sectionTitle,.fieldLabel{font-size:11px;letter-spacing:.22em;text-transform:uppercase}.nav{display:grid;gap:8px}.nav button{padding:14px;border-radius:18px;border:1px solid transparent;background:transparent;color:var(--soft);text-align:left}.nav button.active{border-color:color-mix(in srgb,var(--accent) 35%, transparent);background:color-mix(in srgb,var(--accent) 10%, transparent);color:var(--accent)}.hero{padding:20px;background:linear-gradient(180deg,var(--panel),var(--panel2));margin-bottom:16px}.hero h1{margin:0;font-size:34px;letter-spacing:.1em}.heroTop,.head,.calendarTop,.actions,.moods,.recordActions,.analysisMonthBar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}.btn{border-radius:16px;padding:12px 16px;border:1px solid color-mix(in srgb,var(--accent) 24%, transparent);background:transparent;color:var(--accent)}.btn:hover{background:color-mix(in srgb,var(--accent) 10%, transparent)}.btn.primary{background:var(--accent);color:#00130b;border-color:var(--accent)}.btn.alt{border-color:var(--line2);color:var(--text)}.btn.danger{border-color:color-mix(in srgb,var(--danger) 30%, transparent);color:var(--danger)}.btn.tiny{padding:8px 10px;font-size:12px;border-radius:12px}.grid5,.grid4,.grid3,.grid2,.cards,.thumbs,.viewerGrid,.viewerInfo{display:grid;gap:14px}.grid5{grid-template-columns:repeat(5,minmax(0,1fr))}.grid4{grid-template-columns:repeat(4,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid2,.cards,.thumbs{grid-template-columns:repeat(2,minmax(0,1fr))}.viewerGrid{grid-template-columns:1.15fr .85fr}.dashboardMain{display:grid;grid-template-columns:1.12fr .88fr;gap:14px}.dashboardSide{display:grid;gap:14px}.card,.box,.accountCard,.themeCard,.empty,.viewerCard{padding:18px;border:1px solid var(--line);border-radius:24px;background:var(--panel3)}.big{font-size:34px;font-weight:800;line-height:1;color:var(--accent)}.view{display:none;padding:18px}.view.active{display:block}.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.weekday{padding:5px 0;text-align:center;color:var(--muted);font-size:12px}.day{min-height:64px;border-radius:16px;border:1px solid var(--line2);background:var(--chip);padding:7px;color:var(--soft)}.day.empty{visibility:hidden}.day.neutral{color:var(--muted)}.day.win{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.44);color:#86efac}.day.loss{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.44);color:#fecaca}.day.be{background:rgba(245,158,11,.18);border-color:rgba(245,158,11,.44);color:#fde68a}.day.forecast{background:rgba(56,189,248,.18);border-color:rgba(56,189,248,.44);color:#7dd3fc}.day.analysis{background:rgba(168,85,247,.16);border-color:rgba(168,85,247,.42);color:#d8b4fe}.monthDayContent{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;height:100%;width:100%}.monthDayNum{font-size:14px;line-height:1}.monthDayTag{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}.tag,.chip,.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 10px;border:1px solid var(--line2);font-size:11px;letter-spacing:.12em;text-transform:uppercase}.chip{font-size:12px;padding:6px 10px;background:var(--chip);color:var(--text)}.field{display:grid;gap:8px}.field input,.field textarea,.field select{padding:12px 14px;border-radius:14px;border:1px solid var(--line2);background:var(--input);color:var(--text)}.field textarea{min-height:110px;resize:vertical}.inline2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.setupGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.setupField{padding:12px;border:1px solid var(--line2);border-radius:18px;background:color-mix(in srgb,var(--chip) 80%, transparent)}.setupWide{grid-column:1/-1}.dashboardMesaCard{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 8%, transparent),var(--panel3));border:1px solid color-mix(in srgb,var(--accent) 22%, transparent)}.dashboardMesaMini{padding:14px;border:1px solid var(--line2);border-radius:18px;background:var(--chip);display:grid;gap:12px}.dashboardMesaHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.dashboardMesaHead h4{margin:0;font-size:16px;line-height:1.25}.dashboardMesaMeta{font-size:13px;color:var(--muted);line-height:1.45}.dashboardMesaChips{display:flex;gap:8px;flex-wrap:wrap}.dashboardMesaStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dashboardMesaStat{padding:12px;border:1px solid var(--line2);border-radius:16px;background:rgba(255,255,255,.02)}.dashboardMesaStat .eyebrow{display:block;margin-bottom:6px}.dashboardMesaStat .value{font-size:22px;font-weight:800;line-height:1.1;color:var(--accent)}.mood{padding:10px 12px;border-radius:999px;border:1px solid var(--line2);background:var(--chip);color:var(--soft)}.mood.active{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 34%, transparent);background:color-mix(in srgb,var(--accent) 10%, transparent)}.modalBack{position:fixed;inset:0;background:var(--overlay);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modalBack.show{display:flex}.modal{width:min(1280px,100%);max-height:92vh;overflow:auto;padding:22px;background:linear-gradient(180deg,var(--panel),var(--panel2))}.thumb{position:relative;border:1px solid var(--line2);border-radius:16px;padding:10px;background:var(--chip)}.thumb img{width:100%;height:180px;object-fit:cover;border-radius:12px;display:block}.preview{position:relative;border-radius:16px;overflow:hidden}.preview img{width:100%;height:190px;object-fit:cover;border-radius:16px;display:block}.overlay{position:absolute;inset:0;background:rgba(0,0,0,.54);display:flex;flex-direction:column;justify-content:space-between;padding:10px;opacity:0;pointer-events:none;transition:var(--t)}.preview:hover .overlay{opacity:1;pointer-events:auto}.overlayTop{display:flex;align-items:center;justify-content:space-between;gap:8px}.previewNav,.viewerNav{width:38px;height:38px;border:none;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font-size:20px}.previewCount,.viewerCounter{padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:12px}.overlayAction{width:100%}.viewerBack{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:120}.viewerBack.show{display:flex}.viewer{width:min(1240px,100%);max-height:94vh;overflow:auto;padding:18px}.viewerImage{min-height:460px;border:1px solid var(--line2);border-radius:24px;overflow:hidden;background:rgba(0,0,0,.3);position:relative;display:flex;align-items:center;justify-content:center}.viewerImage img{width:100%;height:100%;object-fit:contain;background:#000}.viewerHover{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.38));display:flex;flex-direction:column;justify-content:space-between;padding:14px;opacity:0;pointer-events:none;transition:var(--t)}.viewerImage:hover .viewerHover{opacity:1;pointer-events:auto}.viewerTopNav{display:flex;align-items:center;justify-content:space-between;gap:10px}.viewerInfo{grid-template-columns:1fr;align-content:start}.imagePageBack{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:20px;z-index:130}.imagePageBack.show{display:flex}.imagePage{width:min(1400px,100%);height:min(92vh,100%);border:1px solid var(--line2);background:#000;border-radius:28px;overflow:hidden;position:relative;box-shadow:var(--shadow)}.imagePage img{width:100%;height:100%;object-fit:contain;display:block;background:#000}.imagePageClose{position:absolute;top:14px;right:14px;border:none;background:rgba(255,255,255,.14);color:#fff;padding:10px 14px;border-radius:999px}.progress{height:10px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}.toast{position:fixed;right:18px;bottom:18px;background:var(--panel);border:1px solid var(--line);padding:14px 16px;border-radius:16px;box-shadow:var(--shadow);transform:translateY(20px);opacity:0;pointer-events:none;transition:var(--t);z-index:150}.toast.show{opacity:1;transform:translateY(0)}
-@media (max-width:1220px){.grid5,.grid4,.grid3,.grid2,.cards,.thumbs,.viewerGrid,.inline2,.setupGrid,.dashboardMain,.dashboardMesaStats{grid-template-columns:1fr}}
+*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+body{background:radial-gradient(circle at top right,rgba(16,185,129,.08),transparent 22%),radial-gradient(circle at top left,rgba(56,189,248,.06),transparent 18%),var(--bg)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:1600px;margin:0 auto;padding:18px}.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px}.sidebar,.hero,.view,.modal,.viewer{border:1px solid var(--line);background:var(--panel);border-radius:24px;box-shadow:var(--shadow)}.sidebar{padding:18px;position:sticky;top:18px;height:max-content;background:var(--panel2)}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:24px}.logo{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--info));color:#02130c;font-size:28px;font-weight:800}.brandName{font-size:24px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.brandSub,.muted,.helper{color:var(--muted)}.brandSub,.eyebrow,.sectionTitle,.fieldLabel{font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+.nav{display:grid;gap:8px}.nav button{padding:14px;border-radius:18px;border:1px solid transparent;background:transparent;color:var(--soft);text-align:left}.nav button.active{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.10);color:var(--accent)}.nav button:hover{border-color:var(--line2);background:var(--chip)}
+.hero{padding:20px;background:linear-gradient(180deg,var(--panel),var(--panel2));margin-bottom:16px}.hero h1{margin:0;font-size:34px;letter-spacing:.1em}.heroTop,.head,.calendarTop,.actions,.moods,.recordActions,.analysisMonthBar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}
+.btn{border-radius:16px;padding:12px 16px;border:1px solid rgba(52,211,153,.24);background:transparent;color:var(--accent)}.btn:hover{background:rgba(52,211,153,.10)}.btn.primary{background:var(--accent);color:#00130b;border-color:var(--accent)}.btn.alt{border-color:var(--line2);color:var(--text)}.btn.danger{border-color:rgba(248,113,113,.3);color:var(--danger)}.btn.tiny{padding:8px 10px;font-size:12px;border-radius:12px}
+.grid5,.grid4,.grid3,.grid2,.cards,.thumbs,.viewerGrid,.viewerInfo,.dashboardMain,.dashboardSide,.studyLayout,.studyRight{display:grid;gap:14px}.grid5{grid-template-columns:repeat(5,minmax(0,1fr))}.grid4{grid-template-columns:repeat(4,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid2,.cards,.thumbs{grid-template-columns:repeat(2,minmax(0,1fr))}.viewerGrid{grid-template-columns:1.15fr .85fr}.dashboardMain{grid-template-columns:1.12fr .88fr}.dashboardSide{grid-template-columns:1fr}.studyLayout{grid-template-columns:1.05fr .95fr}.studyRight{grid-template-columns:1fr}
+.card,.box,.accountCard,.themeCard,.empty,.viewerCard,.studyCard,.mentorFocusCard,.moodCompareCard{padding:18px;border:1px solid var(--line);border-radius:24px;background:var(--panel3)}.big{font-size:34px;font-weight:800;line-height:1;color:var(--accent)}.value{font-size:22px;font-weight:800;line-height:1.1;color:var(--accent)}.view{display:none;padding:18px}.view.active{display:block}
+.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.weekday{padding:5px 0;text-align:center;color:var(--muted);font-size:12px}.day{min-height:64px;border-radius:16px;border:1px solid var(--line2);background:var(--chip);padding:7px;color:var(--soft)}.day.empty{visibility:hidden}.day.neutral{color:var(--muted)}.day.win{background:rgba(34,197,94,.18);border-color:rgba(34,197,94,.44);color:#86efac}.day.loss{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.44);color:#fecaca}.day.be{background:rgba(245,158,11,.18);border-color:rgba(245,158,11,.44);color:#fde68a}.day.forecast{background:rgba(56,189,248,.18);border-color:rgba(56,189,248,.44);color:#7dd3fc}.day.analysis{background:rgba(168,85,247,.16);border-color:rgba(168,85,247,.42);color:#d8b4fe}.monthDayContent{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;height:100%;width:100%}.monthDayNum{font-size:14px;line-height:1}.monthDayTag{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.tag,.chip,.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 10px;border:1px solid var(--line2);font-size:11px;letter-spacing:.12em;text-transform:uppercase}.chip{font-size:12px;padding:6px 10px;background:var(--chip);color:var(--text)}.highlightChip{background:rgba(56,189,248,.14);border-color:rgba(56,189,248,.34);color:#7dd3fc}.moodCountList{display:grid;gap:10px}.moodCountRow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}.moodCountBar{height:8px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.moodCountFill{height:100%;border-radius:999px}
+.field{display:grid;gap:8px}.field input,.field textarea,.field select{padding:12px 14px;border-radius:14px;border:1px solid var(--line2);background:var(--input);color:var(--text);width:100%}.field textarea{min-height:110px;resize:vertical}
+.inline2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.setupGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.setupField{padding:12px;border:1px solid var(--line2);border-radius:18px;background:rgba(255,255,255,.02)}.setupWide{grid-column:1/-1}
+.dashboardMesaCard,.mentorFocusCard,.moodCompareCard{background:linear-gradient(180deg,rgba(52,211,153,.08),var(--panel3));border:1px solid rgba(52,211,153,.22)}.dashboardMesaMini{padding:14px;border:1px solid var(--line2);border-radius:18px;background:var(--chip);display:grid;gap:12px}.dashboardMesaHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.dashboardMesaHead h4{margin:0;font-size:16px;line-height:1.25}.dashboardMesaMeta{font-size:13px;color:var(--muted);line-height:1.45}.dashboardMesaChips{display:flex;gap:8px;flex-wrap:wrap}.dashboardMesaStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dashboardMesaStat{padding:12px;border:1px solid var(--line2);border-radius:16px;background:rgba(255,255,255,.02)}
+.mood{padding:10px 12px;border-radius:999px;border:1px solid var(--line2);background:var(--chip);color:var(--soft)}.mood.active{color:var(--accent);border-color:rgba(52,211,153,.34);background:rgba(52,211,153,.10)}
+.modalBack{position:fixed;inset:0;background:var(--overlay);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modalBack.show{display:flex}.modal{width:min(1280px,100%);max-height:92vh;overflow:auto;padding:22px;background:linear-gradient(180deg,var(--panel),var(--panel2))}
+.thumb{position:relative;border:1px solid var(--line2);border-radius:16px;padding:10px;background:var(--chip)}.thumb img{width:100%;height:180px;object-fit:cover;border-radius:12px;display:block}.preview{position:relative;border-radius:16px;overflow:hidden}.preview img{width:100%;height:190px;object-fit:cover;border-radius:16px;display:block}.overlay{position:absolute;inset:0;background:rgba(0,0,0,.54);display:flex;flex-direction:column;justify-content:space-between;padding:10px;opacity:0;pointer-events:none;transition:var(--t)}.preview:hover .overlay{opacity:1;pointer-events:auto}.overlayTop{display:flex;align-items:center;justify-content:space-between;gap:8px}.previewNav,.viewerNav{width:38px;height:38px;border:none;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font-size:20px}.previewCount,.viewerCounter{padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:12px}.overlayAction{width:100%}
+.viewerBack{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:120}.viewerBack.show{display:flex}.viewer{width:min(1240px,100%);max-height:94vh;overflow:auto;padding:18px}.viewerImage{min-height:460px;border:1px solid var(--line2);border-radius:24px;overflow:hidden;background:rgba(0,0,0,.3);position:relative;display:flex;align-items:center;justify-content:center}.viewerImage img{width:100%;height:100%;object-fit:contain;background:#000}.viewerHover{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.38));display:flex;flex-direction:column;justify-content:space-between;padding:14px;opacity:0;pointer-events:none;transition:var(--t)}.viewerImage:hover .viewerHover{opacity:1;pointer-events:auto}.viewerTopNav{display:flex;align-items:center;justify-content:space-between;gap:10px}.imagePageBack{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:20px;z-index:130}.imagePageBack.show{display:flex}.imagePage{width:min(1400px,100%);height:min(92vh,100%);border:1px solid var(--line2);background:#000;border-radius:28px;overflow:hidden;position:relative;box-shadow:var(--shadow)}.imagePage img{width:100%;height:100%;object-fit:contain;display:block;background:#000}.imagePageClose{position:absolute;top:14px;right:14px;border:none;background:rgba(255,255,255,.14);color:#fff;padding:10px 14px;border-radius:999px}
+.progress{height:10px;border-radius:999px;background:rgba(148,163,184,.18);overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}
+.toast{position:fixed;right:18px;bottom:18px;background:var(--panel);border:1px solid var(--line);padding:14px 16px;border-radius:16px;box-shadow:var(--shadow);transform:translateY(20px);opacity:0;pointer-events:none;transition:var(--t);z-index:150}.toast.show{opacity:1;transform:translateY(0)}
+@media (max-width:1220px){.grid5,.grid4,.grid3,.grid2,.cards,.thumbs,.viewerGrid,.inline2,.setupGrid,.dashboardMain,.dashboardMesaStats,.studyLayout{grid-template-columns:1fr}}
 @media (max-width:980px){.layout{grid-template-columns:1fr}.sidebar{position:static}}
 </style>
 </head>
 <body data-theme="dark">
-<div class="app"><div class="layout"><aside class="sidebar"><div class="brand"><div class="logo">T</div><div><div class="brandName">Trading Dashboard</div><div class="brandSub">Institutional Dashboard</div></div></div><div class="eyebrow" style="margin-bottom:10px;color:var(--muted)">Workspace</div><div class="nav" id="nav"></div></aside><main><section class="hero"><div class="heroTop"><div><h1>TRADING DASHBOARD</h1><div class="muted" style="margin-top:8px">Registro diário com escolha livre de data, card de mesa sincronizado e cálculo automático por risco + RR.</div></div><div class="actions"><button class="btn" id="saveBtn">Salvar dados locais</button><button class="btn primary" id="newDayShortcut">+ Novo registro</button></div></div><div class="grid5" id="heroStats"></div></section><section class="view active" id="view-dashboard"></section><section class="view" id="view-performance"></section><section class="view" id="view-simulador"></section><section class="view" id="view-contas"></section><section class="view" id="view-checklist"></section><section class="view" id="view-backtesting"></section><section class="view" id="view-analises"></section><section class="view" id="view-temas"></section></main></div></div>
+<div class="app"><div class="layout"><aside class="sidebar"><div class="brand"><div class="logo">T</div><div><div class="brandName">Trading Dashboard</div><div class="brandSub">Institutional Dashboard</div></div></div><div class="eyebrow" style="margin-bottom:10px;color:var(--muted)">Workspace</div><div class="nav" id="nav"></div><div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line2);font-size:12px" class="muted">Preview Tiiny · studies in trade journal style</div></aside><main><section class="hero"><div class="heroTop"><div><h1>TRADING DASHBOARD</h1><div class="muted" style="margin-top:8px">Registro diário, contas e estudos em formato trade journal.</div></div><div class="actions"><button class="btn" id="saveBtn">Salvar dados locais</button><button class="btn primary" id="newDayShortcut">+ Novo registro</button></div></div><div class="grid5" id="heroStats"></div></section><section class="view active" id="view-dashboard"></section><section class="view" id="view-performance"></section><section class="view" id="view-simulador"></section><section class="view" id="view-contas"></section><section class="view" id="view-backtesting"></section><section class="view" id="view-analises"></section><section class="view" id="view-estudos"></section><section class="view" id="view-temas"></section></main></div></div>
 
-<div class="modalBack" id="dayModalBack"><div class="modal"><div class="head"><div><div class="sectionTitle">Registro diário</div><div id="dayModalTitle" style="font-size:26px;font-weight:800;color:var(--accent)"></div></div><button class="btn alt" id="closeDayModal">Fechar</button></div><div class="grid4" style="margin:18px 0"><div class="box"><div class="eyebrow">Dia</div><div class="big" id="statDay">--</div></div><div class="box"><div class="eyebrow">Status</div><div class="big" id="statStatus">--</div></div><div class="box"><div class="eyebrow">Ativo</div><div class="big" id="statAsset">--</div></div><div class="box"><div class="eyebrow">Prints</div><div class="big" id="statImgs">0</div></div></div><div class="grid2"><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Setup do dia</div></div><span class="badge">setup</span></div><div class="setupGrid"><div class="field setupField"><label class="fieldLabel">Data do registro</label><input id="dayDate" type="date"></div><div class="field setupField"><label class="fieldLabel">Conta/Mesa operada</label><select id="dayAccount"></select></div><div class="field setupField"><label class="fieldLabel">Status</label><select id="dayStatus"><option value="">Sem status</option><option value="analysis">Só análise</option><option value="forecast">Forecast</option><option value="be">Break-even</option><option value="win">Win</option><option value="loss">Loss</option></select></div><div class="field setupField"><label class="fieldLabel">Ativo</label><select id="dayAsset"></select></div><div class="field setupField"><label class="fieldLabel">Direção</label><select id="dayDirection"></select></div><div class="field setupField"><label class="fieldLabel">Setup ICT</label><select id="daySetup"></select></div><div class="field setupField"><label class="fieldLabel">Timeframe</label><select id="dayTf"></select></div><div class="field setupField"><label class="fieldLabel">RR</label><input id="dayRR" type="number" step="0.1"></div><div class="field setupField"><label class="fieldLabel">Resultado do dia ($)</label><input id="dayPnl" type="number" step="0.01"></div><div class="field setupField setupWide"><label class="fieldLabel">Narrativa / bias</label><textarea id="dayBias"></textarea></div></div></div><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Emocional e psicológico</div></div><span class="badge">mindset</span></div><div id="moodList" class="moods" style="margin-top:12px"></div><div class="inline2" style="margin-top:12px"><div class="field"><label class="fieldLabel">Adicionar comportamento</label><input id="customMood"></div><div class="field"><label class="fieldLabel">Ação</label><button class="btn alt" type="button" id="addMoodBtn">Adicionar</button></div></div><div id="selectedMoods" class="actions" style="margin-top:12px;justify-content:flex-start"></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Observação emocional</label><textarea id="dayEmotionNote"></textarea></div></div><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Execução e revisão</div></div><span class="badge">review</span></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Anotações</label><textarea id="dayNote"></textarea></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Lição / aprendizado</label><textarea id="dayLesson"></textarea></div></div><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Prints do dia</div></div><span class="badge">prints</span></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Enviar imagens</label><input id="dayImages" type="file" accept="image/*" multiple></div><div id="dayThumbs" class="empty" style="margin-top:12px">Nenhum print salvo para esse dia.</div></div></div><div class="actions" style="margin-top:18px;justify-content:flex-end"><button class="btn danger" id="deleteDayBtn">Limpar dia</button><button class="btn primary" id="saveDayBtn">Salvar registro</button></div></div></div>
+<div class="modalBack" id="dayModalBack"><div class="modal"><div class="head"><div><div class="sectionTitle">Registro diário</div><div id="dayModalTitle" style="font-size:26px;font-weight:800;color:var(--accent)"></div><div class="muted" style="margin-top:6px">Agora com até 10 imagens por dia.</div></div><button class="btn alt" id="closeDayModal">Fechar</button></div><div class="grid4" style="margin:18px 0"><div class="box"><div class="eyebrow">Dia</div><div class="big" id="statDay">--</div></div><div class="box"><div class="eyebrow">Status</div><div class="big" id="statStatus">--</div></div><div class="box"><div class="eyebrow">Ativo</div><div class="big" id="statAsset">--</div></div><div class="box"><div class="eyebrow">Prints</div><div class="big" id="statImgs">0</div></div></div><div class="grid2"><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Setup do dia</div><div class="muted">Data editável + vínculo com a mesa</div></div><span class="badge">setup</span></div><div class="setupGrid"><div class="field setupField"><label class="fieldLabel">Data do registro</label><input id="dayDate" type="date"></div><div class="field setupField"><label class="fieldLabel">Conta/Mesa operada</label><select id="dayAccount"></select></div><div class="field setupField"><label class="fieldLabel">Status</label><select id="dayStatus"><option value="">Sem status</option><option value="analysis">Só análise</option><option value="forecast">Forecast</option><option value="be">Break-even</option><option value="win">Win</option><option value="loss">Loss</option></select></div><div class="field setupField"><label class="fieldLabel">Ativo</label><select id="dayAsset"></select></div><div class="field setupField"><label class="fieldLabel">Direção</label><select id="dayDirection"></select></div><div class="field setupField"><label class="fieldLabel">Setup ICT</label><select id="daySetup"></select></div><div class="field setupField"><label class="fieldLabel">Timeframe</label><select id="dayTf"></select></div><div class="field setupField"><label class="fieldLabel">RR</label><input id="dayRR" type="number" step="0.1" placeholder="Ex: 2.5"></div><div class="field setupField"><label class="fieldLabel">Resultado do dia ($)</label><input id="dayPnl" type="number" step="0.01" placeholder="Ex: 120 ou -60"></div><div class="field setupField setupWide"><label class="fieldLabel">Narrativa / bias</label><textarea id="dayBias" placeholder="Ex: sell side raid + MSS + FVG no M15"></textarea></div></div></div><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Emocional e psicológico</div><div class="muted">Selecione e complemente seus comportamentos</div></div><span class="badge">mindset</span></div><div id="moodList" class="moods" style="margin-top:12px"></div><div class="inline2" style="margin-top:12px"><div class="field"><label class="fieldLabel">Adicionar comportamento</label><input id="customMood" placeholder="Ex: confiante"></div><div class="field"><label class="fieldLabel">Ação</label><button class="btn alt" type="button" id="addMoodBtn">Adicionar</button></div></div><div id="selectedMoods" class="actions" style="margin-top:12px;justify-content:flex-start"></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Observação emocional</label><textarea id="dayEmotionNote" placeholder="Como você estava mentalmente no dia?"></textarea></div></div><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Execução e revisão</div><div class="muted">Notas e lições</div></div><span class="badge">review</span></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Anotações</label><textarea id="dayNote"></textarea></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Lição / aprendizado</label><textarea id="dayLesson"></textarea></div></div><div class="card"><div class="head"><div><div style="font-size:16px;font-weight:700">Prints do dia</div><div class="muted">Máximo de 10 imagens por dia</div></div><span class="badge">prints</span></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Enviar imagens</label><input id="dayImages" type="file" accept="image/*" multiple></div><div id="dayThumbs" class="empty" style="margin-top:12px">Nenhum print salvo para esse dia.</div></div></div><div class="actions" style="margin-top:18px;justify-content:flex-end"><button class="btn danger" id="deleteDayBtn">Limpar dia</button><button class="btn primary" id="saveDayBtn">Salvar registro</button></div></div></div>
 
 <div class="modalBack" id="accountModalBack"><div class="modal"><div class="head"><div><div class="sectionTitle">Contas & mesas</div><div id="accountTitle" style="font-size:26px;font-weight:800;color:var(--accent)">Nova conta ou mesa</div></div><button class="btn alt" id="closeAccountModal">Fechar</button></div><div class="grid2" style="margin-top:18px"><div class="card"><div class="field"><label class="fieldLabel">Nome</label><input id="accountName"></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Categoria</label><select id="accountCategory"><option>Conta</option><option>Mesa</option></select></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Tipo</label><input id="accountType"></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Saldo</label><input id="accountBalance"></div></div><div class="card"><div class="field"><label class="fieldLabel">Quantidade de fases</label><select id="accountPhaseCount"><option value="1">1 Fase</option><option value="2">2 Fases</option><option value="3">3 Fases</option></select></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Fase atual</label><div class="box" id="accountPhaseAuto">Automática · 1 Fase</div></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Status</label><select id="accountStatus"><option>Ativa</option><option>Observação</option><option>Pausada</option><option>Concluída</option></select></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Progresso base manual (%)</label><input id="accountProgress" type="number" min="0" max="100" value="0"></div><div class="grid3" style="margin-top:12px"><div class="field"><label class="fieldLabel">Meta Fase 1 (%)</label><input id="phase1Goal" type="number" min="0" step="0.1"></div><div class="field"><label class="fieldLabel">Meta Fase 2 (%)</label><input id="phase2Goal" type="number" min="0" step="0.1"></div><div class="field"><label class="fieldLabel">Meta Fase 3 (%)</label><input id="phase3Goal" type="number" min="0" step="0.1"></div></div><div class="inline2" style="margin-top:12px"><div class="field"><label class="fieldLabel">Gerenciamento por percentual (%)</label><input id="riskPercent" type="number" min="0" step="0.01"></div><div class="field"><label class="fieldLabel">Gerenciamento por valor ($)</label><input id="riskValue" type="number" min="0" step="0.01"></div></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Observações</label><textarea id="accountNotes"></textarea></div></div></div><div class="actions" style="margin-top:18px;justify-content:flex-end"><button class="btn danger" id="deleteAccountBtn">Excluir</button><button class="btn primary" id="saveAccountBtn">Salvar conta/mesa</button></div></div></div>
 
-<div class="viewerBack" id="viewerBack"><div class="viewer"><div class="head"><div><div class="sectionTitle">Visualização do print</div><div id="viewerTitle" style="font-size:24px;font-weight:800;color:var(--accent)"></div></div><div class="actions"><button class="btn alt" id="editViewerRecord">Editar registro</button><button class="btn alt" id="closeViewer">Fechar</button></div></div><div class="viewerGrid" style="margin-top:12px"><div class="viewerImage" id="viewerImage"></div><div class="viewerInfo" id="viewerInfo"></div></div></div></div>
+<div class="viewerBack" id="viewerBack"><div class="viewer"><div class="head"><div><div class="sectionTitle">Visualização</div><div id="viewerTitle" style="font-size:24px;font-weight:800;color:var(--accent)"></div></div><div class="actions"><button class="btn alt" id="editViewerRecord">Editar</button><button class="btn alt" id="closeViewer">Fechar</button></div></div><div class="viewerGrid" style="margin-top:12px"><div class="viewerImage" id="viewerImage"></div><div class="viewerInfo" id="viewerInfo"></div></div></div></div>
 <div class="imagePageBack" id="imagePageBack"><div class="imagePage"><button class="imagePageClose" id="closeImagePage">Fechar</button><img id="imagePageImg" alt="Imagem ampliada"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const THEMES=['dark','light','graphite'];
-const MOODS=['Triste','Frustrado','Feliz','Focado','Ansioso'];
-const NAVS=['Dashboard','Performance','Simulador','Contas','Checklist','Backtesting','Minhas Análises','Temas'];
+const BASE_MOODS=['Triste','Frustrado','Feliz','Focado','Ansioso'];
+const MOOD_EMOJIS={Triste:'😔',Frustrado:'😤',Feliz:'😄',Focado:'🧠',Ansioso:'😰'};
+const NAVS=['Dashboard','Performance','Simulador','Contas','Backtesting','Minhas Análises','Estudos','Temas'];
 const ASSETS=['EURUSD','GBPUSD','DXY','XAUUSD','NAS100','US30','GBPJPY','USDJPY'];
 const DIRECTIONS=['Buy dips','Sell rallies','Neutral','Aguardar confirmação'];
-const SETUPS=['Liquidity Sweep','MSS','FVG','Order Block','Breaker','OTE'];
+const SETUPS=['Liquidity Sweep + MSS','FVG / IFVG','Order Block','Breaker','OTE','AMD','SMT Divergence','BPR','PD Array'];
 const TIMEFRAMES=['Mensal','Semanal','Diário','4H','1H','15 Min','5 Min','1 Min'];
+const STUDY_TIMEFRAMES=['Sem timeframe',...TIMEFRAMES];
+const STUDY_MODELS=['Nenhum','AMD','Judas Swing','Liquidity Sweep + MSS','Fair Value Gap / IFVG','Order Block / Breaker','OTE','SMT Divergence','BPR','Power of 3','PD Arrays','MMXM','Silver Bullet'];
+const MENTORSHIPS=['ICT Mentorship 2016','ICT Mentorship 2017','ICT Mentorship 2022','ICT Mentorship 2023','ICT Mentorship 2024','Outro material do Michael'];
 const monthNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const weekdays=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
 const statusLabels={neutral:'Sem status',analysis:'Análise',forecast:'Forecast',be:'BE',win:'Win',loss:'Loss'};
-const STORAGE='trading-dashboard-clean-v13';
+const STORAGE='trading-dashboard-tiiny-tradejournal-v4';
 const nowDate=new Date();
-
-const state={
-  activeNav:'Dashboard',
-  calendar:{year:nowDate.getFullYear(),month:nowDate.getMonth()},
-  accountReport:{year:nowDate.getFullYear(),month:nowDate.getMonth()},
-  analysisMonth:{year:nowDate.getFullYear(),month:nowDate.getMonth()},
-  entries:{},
-  accounts:[],
-  modalDate:{year:nowDate.getFullYear(),month:nowDate.getMonth(),day:nowDate.getDate()},
-  dayImages:[],
-  dayMoods:[],
-  viewer:{images:[],index:0,label:'',entry:null,key:''},
-  accountEdit:null,
-  previewIndex:{},
-  checkStatus:[false,false,false,false,false,false],
-  checklist:['Bias semanal alinhado','Bias diário confirmado','POI validado','Kill zone correta','Sem notícia de alto impacto','Risco dentro da regra']
-};
-
+const state={activeNav:'Dashboard',calendar:{year:nowDate.getFullYear(),month:nowDate.getMonth()},accountReport:{year:nowDate.getFullYear(),month:nowDate.getMonth()},analysisMonth:{year:nowDate.getFullYear(),month:nowDate.getMonth()},entries:{},accounts:[],studies:[],currentMentorship:'ICT Mentorship 2022',savedMoods:[],dayImages:[],dayMoods:[],modalDate:{year:nowDate.getFullYear(),month:nowDate.getMonth(),day:nowDate.getDate()},viewer:{images:[],index:0,label:'',entry:null,key:''},accountEdit:null,studyEdit:null,studyDraftImages:[],previewIndex:{}};
 const $=(s,r=document)=>r.querySelector(s);
-
-function toast(msg){
-  const t=$('#toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  clearTimeout(window._t);
-  window._t=setTimeout(()=>t.classList.remove('show'),2200);
-}
-
-function createId(prefix='id'){
-  return prefix+'-'+Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4);
-}
-
-function save(silent=false){
-  localStorage.setItem(STORAGE,JSON.stringify({
-    theme:document.body.dataset.theme,
-    calendar:state.calendar,
-    accountReport:state.accountReport,
-    analysisMonth:state.analysisMonth,
-    entries:state.entries,
-    accounts:state.accounts,
-    checkStatus:state.checkStatus,
-    previewIndex:state.previewIndex
-  }));
-  if(!silent) toast('Dados salvos neste navegador');
-}
-
-function load(){
-  try{
-    const raw=JSON.parse(localStorage.getItem(STORAGE)||'null');
-    if(!raw) return;
-    state.calendar=raw.calendar||state.calendar;
-    state.accountReport=raw.accountReport||state.accountReport;
-    state.analysisMonth=raw.analysisMonth||state.analysisMonth;
-    state.entries=raw.entries||{};
-    state.accounts=raw.accounts||[];
-    state.checkStatus=raw.checkStatus||state.checkStatus;
-    state.previewIndex=raw.previewIndex||{};
-    document.body.dataset.theme=raw.theme||'dark';
-  }catch{}
-}
-
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove('show'),2200)}
+function createId(prefix='id'){return prefix+'-'+Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4)}
+function save(silent=false){localStorage.setItem(STORAGE,JSON.stringify({theme:document.body.dataset.theme,calendar:state.calendar,accountReport:state.accountReport,analysisMonth:state.analysisMonth,entries:state.entries,accounts:state.accounts,studies:state.studies,currentMentorship:state.currentMentorship,savedMoods:state.savedMoods,previewIndex:state.previewIndex}));if(!silent)toast('Dados salvos neste navegador')}
+function load(){try{const raw=JSON.parse(localStorage.getItem(STORAGE)||'null');if(!raw)return;state.calendar=raw.calendar||state.calendar;state.accountReport=raw.accountReport||state.accountReport;state.analysisMonth=raw.analysisMonth||state.analysisMonth;state.entries=raw.entries||{};state.accounts=raw.accounts||[];state.studies=raw.studies||[];state.currentMentorship=raw.currentMentorship||state.currentMentorship;state.savedMoods=raw.savedMoods||[];state.previewIndex=raw.previewIndex||{};document.body.dataset.theme=raw.theme||'dark'}catch{}}
+function allMoods(){return [...new Set([...BASE_MOODS,...state.savedMoods])].filter(Boolean)}
+function moodEmoji(name){return MOOD_EMOJIS[name]||'📝'}
 function totalPhases(a){return Math.min(3,Math.max(1,Number(a.phaseCount)||1))}
 function phaseLabel(step){return step===3?'3 Fases':step===2?'2 Fases':'1 Fase'}
-
-function normalizeAccount(a){
-  const count=totalPhases(a||{});
-  return {phaseCount:1,phaseStep:1,progress:0,...a,id:(a&&a.id)||createId('acc'),phaseCount:count,phaseLabel:phaseLabel(count)};
-}
-
-function ensureAccountIds(){
-  let changed=false;
-  state.accounts=state.accounts.map(a=>a.id?a:(changed=true,{...a,id:createId('acc')}));
-  if(changed) save(true);
-}
-
-function accountDisplayLabel(a){
-  return `${a.name} · ${a.balance||'Sem saldo'} · ${a.category} · ${a.status}`;
-}
-
-function num(v){
-  if(v===null||v===undefined) return NaN;
-  const s=String(v).replace(',','.').trim();
-  if(!s) return NaN;
-  const n=Number(s);
-  return Number.isFinite(n)?n:NaN;
-}
-
-function fmtMoney(n){
-  if(!Number.isFinite(n)) return '—';
-  return '$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
-
-function pctText(n){
-  if(!Number.isFinite(n)) return '—';
-  return n.toFixed(2).replace('.',',')+'%';
-}
-
-function keyFromYMD(y,m,d){
-  return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-}
-
-function parseKey(key){
-  const [y,m,d]=key.split('-').map(Number);
-  return {year:y,month:m-1,day:d};
-}
-
-function keyFromDate(d){
-  return keyFromYMD(d.getFullYear(),d.getMonth(),d.getDate());
-}
-
-function getAccountById(id){
-  return state.accounts.find(a=>a.id===id);
-}
-
-function getAccountNameById(id){
-  const a=getAccountById(id);
-  return a?accountDisplayLabel(a):(id?'Mesa removida':'Sem vínculo');
-}
-
-function calcRiskValueForAccount(account){
-  if(!account) return NaN;
-  const fixed=num(account.riskValue);
-  if(Number.isFinite(fixed)&&fixed>0) return fixed;
-  const balance=num(account.balance),pct=num(account.riskPercent);
-  if(Number.isFinite(balance)&&Number.isFinite(pct)&&pct>0) return balance*(pct/100);
-  return NaN;
-}
-
-function effectiveEntryPnl(entry){
-  if(!entry) return 0;
-  const explicit=num(entry.pnl);
-  if(Number.isFinite(explicit)) return explicit;
-  const status=entry.status||'';
-  if(!['win','loss','be'].includes(status)) return 0;
-  const account=getAccountById(entry.accountId);
-  const risk=calcRiskValueForAccount(account);
-  if(!Number.isFinite(risk)||risk<=0) return 0;
-  const rr=num(entry.rr);
-  if(status==='win') return risk*(Number.isFinite(rr)&&rr>0?rr:1);
-  if(status==='loss') return -risk;
-  return 0;
-}
-
-function entryPnlLabel(entry){
-  return fmtMoney(effectiveEntryPnl(entry));
-}
-
-function monthEntriesFor(year,month){
-  return Object.entries(state.entries)
-    .filter(([k])=>{
-      const [yy,mm]=k.split('-').map(Number);
-      return yy===year&&mm===month+1;
-    })
-    .map(([key,val])=>({key,...val}));
-}
-
-function monthEntriesForAccount(year,month,accountId){
-  return monthEntriesFor(year,month).filter(e=>e.accountId===accountId);
-}
-
-function countsFromEntries(entries){
-  const c={win:0,loss:0,be:0,analysis:0,forecast:0,neutral:0,registered:0};
-  entries.forEach(e=>{
-    const s=e.status||'neutral';
-    c[s]=(c[s]||0)+1;
-    c.registered++;
-  });
-  return c;
-}
-
-function entriesNetPnl(entries){
-  return entries.reduce((sum,e)=>sum+effectiveEntryPnl(e),0);
-}
-
-function entriesAvgRR(entries){
-  const arr=entries.map(e=>num(e.rr)).filter(v=>Number.isFinite(v));
-  return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:NaN;
-}
-
+function normalizeAccount(a){const count=totalPhases(a||{});return {phaseCount:1,progress:0,...a,id:(a&&a.id)||createId('acc'),phaseCount:count,phaseLabel:phaseLabel(count)}}
+function ensureAccountIds(){let changed=false;state.accounts=state.accounts.map(a=>a.id?a:(changed=true,{...a,id:createId('acc')}));if(changed)save(true)}
+function accountDisplayLabel(a){return `${a.name} · ${a.balance||'Sem saldo'} · ${a.category} · ${a.status}`}
+function num(v){if(v===null||v===undefined)return NaN;const s=String(v).replace(',','.').trim();if(!s)return NaN;const n=Number(s);return Number.isFinite(n)?n:NaN}
+function fmtMoney(n){if(!Number.isFinite(n))return '—';return '$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function pctText(n){if(!Number.isFinite(n))return '—';return n.toFixed(2).replace('.',',')+'%'}
+function keyFromYMD(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`}
+function parseKey(key){const [y,m,d]=key.split('-').map(Number);return{year:y,month:m-1,day:d}}
+function keyFromDate(d){return keyFromYMD(d.getFullYear(),d.getMonth(),d.getDate())}
+function getAccountById(id){return state.accounts.find(a=>a.id===id)}
+function getAccountNameById(id){const a=getAccountById(id);return a?accountDisplayLabel(a):(id?'Mesa removida':'Sem vínculo')}
+function calcRiskValueForAccount(account){if(!account)return NaN;const fixed=num(account.riskValue);if(Number.isFinite(fixed)&&fixed>0)return fixed;const balance=num(account.balance),pct=num(account.riskPercent);if(Number.isFinite(balance)&&Number.isFinite(pct)&&pct>0)return balance*(pct/100);return NaN}
+function effectiveEntryPnl(entry){if(!entry)return 0;const explicit=num(entry.pnl);if(Number.isFinite(explicit))return explicit;const status=entry.status||'';if(!['win','loss','be'].includes(status))return 0;const account=getAccountById(entry.accountId);const risk=calcRiskValueForAccount(account);if(!Number.isFinite(risk)||risk<=0)return 0;const rr=num(entry.rr);if(status==='win')return risk*(Number.isFinite(rr)&&rr>0?rr:1);if(status==='loss')return -risk;return 0}
+function entryPnlLabel(entry){return fmtMoney(effectiveEntryPnl(entry))}
+function monthEntriesFor(year,month){return Object.entries(state.entries).filter(([k])=>{const [yy,mm]=k.split('-').map(Number);return yy===year&&mm===month+1}).map(([key,val])=>({key,...val}))}
+function monthEntriesForAccount(year,month,accountId){return monthEntriesFor(year,month).filter(e=>e.accountId===accountId)}
+function countsFromEntries(entries){const c={win:0,loss:0,be:0,analysis:0,forecast:0,neutral:0,registered:0};entries.forEach(e=>{const s=e.status||'neutral';c[s]=(c[s]||0)+1;c.registered++});return c}
+function entriesNetPnl(entries){return entries.reduce((sum,e)=>sum+effectiveEntryPnl(e),0)}
+function entriesAvgRR(entries){const arr=entries.map(e=>num(e.rr)).filter(v=>Number.isFinite(v));return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:NaN}
 function monthCounts(){return countsFromEntries(monthEntriesFor(state.calendar.year,state.calendar.month))}
 function monthCountsFor(y,m){return countsFromEntries(monthEntriesFor(y,m))}
 function monthNetPnlFor(y,m){return entriesNetPnl(monthEntriesFor(y,m))}
 function monthAvgRRFor(y,m){return entriesAvgRR(monthEntriesFor(y,m))}
 function winRateFromCounts(c){const ops=(c.win||0)+(c.loss||0);return ops?Math.round((c.win/ops)*100):0}
 function winRate(){return winRateFromCounts(monthCounts())}
-
-function accountSyncData(account,y,m){
-  const a=normalizeAccount(account),
-        entries=monthEntriesForAccount(y,m,a.id),
-        counts=countsFromEntries(entries),
-        netPnl=entriesNetPnl(entries),
-        balance=num(a.balance),
-        monthPct=Number.isFinite(balance)&&balance!==0?(netPnl/balance)*100:0,
-        baseProgress=num(a.progress)||0;
-  let totalPct=baseProgress+monthPct,
-      step=1,
-      phase1=num(a.phase1Goal)||0,
-      phase2=num(a.phase2Goal)||0,
-      phase3=num(a.phase3Goal)||0;
-
-  if(a.phaseCount>=2&&phase1>0&&totalPct>=phase1){ totalPct-=phase1; step=2; }
-  if(a.phaseCount>=3&&step===2&&phase2>0&&totalPct>=phase2){ totalPct-=phase2; step=3; }
-
-  const currentGoal=step===1?phase1:step===2?phase2:phase3;
-  return {
-    counts,
-    netPnl,
-    phaseLabel:phaseLabel(a.phaseCount),
-    currentPct:totalPct,
-    progressBar:currentGoal>0?Math.max(0,Math.min(100,totalPct/currentGoal*100)):Math.max(0,Math.min(100,totalPct)),
-    monthPct
-  };
-}
-
-function fillOptions(){
-  $('#dayAsset').innerHTML=ASSETS.map(v=>`<option value="${v}">${v}</option>`).join('');
-  $('#dayDirection').innerHTML=DIRECTIONS.map(v=>`<option value="${v}">${v}</option>`).join('');
-  $('#daySetup').innerHTML=SETUPS.map(v=>`<option value="${v}">${v}</option>`).join('');
-  $('#dayTf').innerHTML=TIMEFRAMES.map(v=>`<option value="${v}">${v}</option>`).join('');
-}
-
-function fillAccountOptions(selected=''){
-  ensureAccountIds();
-  const list=[...state.accounts].sort((a,b)=>((a.status==='Ativa')===(b.status==='Ativa')?String(a.name).localeCompare(String(b.name)):a.status==='Ativa'?-1:1));
-  $('#dayAccount').innerHTML=[`<option value="">Sem vínculo</option>`,...list.map(a=>`<option value="${a.id}">${accountDisplayLabel(a)}</option>`)].join('');
-  $('#dayAccount').value=selected||'';
-}
-
-function togglePhaseGoalFields(){
-  const count=Number($('#accountPhaseCount').value||1);
-  const p2=$('#phase2Goal').closest('.field'),p3=$('#phase3Goal').closest('.field');
-  p2.style.display=count>=2?'grid':'none';
-  p3.style.display=count>=3?'grid':'none';
-  if(count<2) $('#phase2Goal').value='';
-  if(count<3) $('#phase3Goal').value='';
-  updateAccountPhasePreview();
-}
-
-function updateAccountPhasePreview(){
-  $('#accountPhaseAuto').textContent='Automática · '+phaseLabel(Number($('#accountPhaseCount').value||1));
-}
-
-function renderNav(){
-  const nav=$('#nav');
-  nav.innerHTML=NAVS.map(n=>`<button class="${state.activeNav===n?'active':''}" data-nav="${n}">${n}</button>`).join('');
-  nav.querySelectorAll('[data-nav]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();state.activeNav=b.dataset.nav;render()});
-}
-
-function renderHero(){
-  const c=monthCounts();
-  $('#heroStats').innerHTML=`
-    <div class="box"><div class="eyebrow">Wins</div><div class="big">${c.win}</div></div>
-    <div class="box"><div class="eyebrow">Loss</div><div class="big" style="color:var(--danger)">${c.loss}</div></div>
-    <div class="box"><div class="eyebrow">BE</div><div class="big" style="color:var(--warn)">${c.be}</div></div>
-    <div class="box"><div class="eyebrow">Registros</div><div class="big">${c.registered}</div></div>
-    <div class="box"><div class="eyebrow">Win rate</div><div class="big">${winRate()}%</div></div>
-  `;
-}
-
-function renderDashboardMesaVisual(){
-  const active=[...state.accounts].map(normalizeAccount).filter(a=>a.status==='Ativa').slice(0,3);
-  return `<div class="card dashboardMesaCard">
-    <div class="head">
-      <div>
-        <div class="sectionTitle">Mesas em visualização</div>
-        <div class="muted">Resumo rápido das mesas ativas.</div>
-      </div>
-      <span class="badge">${active.length} ativa(s)</span>
-    </div>
-    ${active.length?`<div class="cards" style="margin-top:12px">${active.map(a=>{
-      const s=accountSyncData(a,state.accountReport.year,state.accountReport.month);
-      return `<div class="dashboardMesaMini">
-        <div class="dashboardMesaHead">
-          <div>
-            <h4>${a.name}</h4>
-            <div class="dashboardMesaMeta">${a.balance||'Sem saldo'} · ${a.phaseLabel}</div>
-          </div>
-          <span class="chip">${pctText(s.monthPct)}</span>
-        </div>
-        <div class="dashboardMesaChips">
-          <span class="chip">${s.counts.win}W</span>
-          <span class="chip">${s.counts.loss}L</span>
-          <span class="chip">${s.counts.be}BE</span>
-        </div>
-        <div class="progress"><div class="bar" style="width:${s.progressBar}%"></div></div>
-        <div class="dashboardMesaStats">
-          <div class="dashboardMesaStat"><span class="eyebrow">Resultado</span><span class="value">${fmtMoney(s.netPnl)}</span></div>
-          <div class="dashboardMesaStat"><span class="eyebrow">Fase atual</span><span class="value">${pctText(s.currentPct)}</span></div>
-        </div>
-      </div>`;
-    }).join('')}</div>`:`<div class="empty" style="margin-top:12px">Cadastre uma conta ou mesa em Contas para visualizar aqui.</div>`}
-  </div>`;
-}
-
-function openCalendarDayViewer(y,m,d){
-  const key=keyFromYMD(y,m,d);
-  const entry=state.entries[key]||{status:'',asset:'',direction:'',setup:'',timeframe:'',bias:'',note:'',lesson:'',emotionNote:'',emotions:[],images:[],pnl:'',rr:'',accountId:''};
-  openViewer(entry.images||[],key,entry,state.previewIndex[key]||0,key);
-}
-
-function renderDashboard(){
-  const view=$('#view-dashboard'),year=state.calendar.year,month=state.calendar.month,c=monthCountsFor(year,month),first=new Date(year,month,1).getDay(),dim=new Date(year,month+1,0).getDate();
-  let cal=weekdays.map(w=>`<div class="weekday">${w}</div>`).join('');
-  for(let i=0;i<first;i++) cal+=`<div class="day empty"></div>`;
-  for(let d=1;d<=dim;d++){
-    const key=keyFromYMD(year,month,d),entry=state.entries[key],status=(entry?.status)||'neutral';
-    cal+=`<button type="button" class="day ${status}" data-day="${d}"><div class="monthDayContent"><span class="monthDayNum">${d}</span>${entry&&status!=='neutral'?`<span class="tag monthDayTag">${statusLabels[status]}</span>`:''}</div></button>`;
-  }
-
-  view.innerHTML=`
-    <div class="grid4">
-      <div class="box"><div class="eyebrow">Wins do mês</div><div class="big">${c.win}</div></div>
-      <div class="box"><div class="eyebrow">Loss do mês</div><div class="big" style="color:var(--danger)">${c.loss}</div></div>
-      <div class="box"><div class="eyebrow">BE</div><div class="big" style="color:var(--warn)">${c.be}</div></div>
-      <div class="box"><div class="eyebrow">P&L</div><div class="big">${fmtMoney(monthNetPnlFor(year,month))}</div></div>
-    </div>
-    <div class="dashboardMain" style="margin-top:16px">
-      <div class="card">
-        <div class="calendarTop">
-          <div><div class="sectionTitle">Calendário mensal</div><div class="muted">${monthNames[month]} ${year}</div></div>
-          <div class="actions"><button class="btn tiny alt" id="prevMonth">←</button><button class="btn tiny alt" id="nextMonth">→</button></div>
-        </div>
-        <div class="calendar" style="margin-top:12px">${cal}</div>
-      </div>
-      <div class="dashboardSide">
-        ${renderDashboardMesaVisual()}
-        <div class="card">
-          <div class="sectionTitle">Feed do mês</div>
-          ${monthEntriesFor(year,month).sort((a,b)=>b.key.localeCompare(a.key)).slice(0,4).map(i=>`<div class="box" style="margin-top:10px"><strong>${i.key}</strong><div class="muted">${i.asset||'Sem ativo'} · ${statusLabels[i.status||'neutral']} · ${getAccountNameById(i.accountId)}</div><div style="margin-top:6px">${i.note||i.bias||i.lesson||'Registro salvo'}</div></div>`).join('')||`<div class="empty">Nenhum registro salvo ainda.</div>`}
-        </div>
-      </div>
-    </div>`;
-
-  $('#prevMonth').onclick=(e)=>{e.stopPropagation();let m=state.calendar.month-1,y=state.calendar.year;if(m<0){m=11;y--}state.calendar.month=m;state.calendar.year=y;save(true);render()};
-  $('#nextMonth').onclick=(e)=>{e.stopPropagation();let m=state.calendar.month+1,y=state.calendar.year;if(m>11){m=0;y++}state.calendar.month=m;state.calendar.year=y;save(true);render()};
-  view.querySelectorAll('[data-day]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();openCalendarDayViewer(state.calendar.year,state.calendar.month,Number(b.dataset.day))});
-}
-
-function renderPerformance(){
-  $('#view-performance').innerHTML=`
-    <div class="grid4">
-      <div class="box"><div class="eyebrow">P&L mensal</div><div class="big">${fmtMoney(monthNetPnlFor(state.calendar.year,state.calendar.month))}</div></div>
-      <div class="box"><div class="eyebrow">RR médio</div><div class="big">${Number.isFinite(monthAvgRRFor(state.calendar.year,state.calendar.month))?monthAvgRRFor(state.calendar.year,state.calendar.month).toFixed(2)+'R':'—'}</div></div>
-      <div class="box"><div class="eyebrow">Dias registrados</div><div class="big">${monthCounts().registered}</div></div>
-      <div class="box"><div class="eyebrow">Win rate</div><div class="big">${winRate()}%</div></div>
-    </div>`;
-}
-
-function renderSimulador(){
-  $('#view-simulador').innerHTML=`<div class="card"><div class="sectionTitle">Simulador</div><div class="empty">Espaço reservado para simulações futuras.</div></div>`;
-}
-
-function renderContas(){
-  ensureAccountIds();
-  state.accounts=state.accounts.map(normalizeAccount);
-  const r=state.accountReport,view=$('#view-contas');
-  view.innerHTML=`
-    <div class="card">
-      <div class="head">
-        <div><div class="sectionTitle">Contas & mesas</div></div>
-        <div class="actions"><button class="btn primary" id="newAccount">+ Nova conta / mesa</button><span class="badge">${state.accounts.length} registros</span></div>
-      </div>
-      <div class="head" style="margin-top:14px">
-        <div><div class="sectionTitle">Relatório do mês</div><div style="font-size:18px;font-weight:800;color:var(--accent)">${monthNames[r.month]} ${r.year}</div></div>
-        <div class="actions"><button class="btn tiny alt" id="prevAccountMonth">←</button><button class="btn tiny alt" id="resetAccountMonth">Atual</button><button class="btn tiny alt" id="nextAccountMonth">→</button></div>
-      </div>
-      <div class="cards" style="margin-top:16px">
-        ${state.accounts.length?state.accounts.map((raw,i)=>{
-          const a=normalizeAccount(raw),s=accountSyncData(a,r.year,r.month);
-          return `<div class="accountCard">
-            <div class="head">
-              <div><div style="font-size:16px;font-weight:700">${a.name}</div><div class="muted">${a.category} · ${a.type||'Sem tipo'} · ${a.balance||'Sem saldo'}</div></div>
-              <span class="badge">${a.status}</span>
-            </div>
-            <div class="big" style="font-size:30px">${a.balance||'$0'}</div>
-            <div class="actions" style="justify-content:flex-start;margin-top:10px"><span class="chip">${s.phaseLabel}</span><span class="chip">Resultado mês ${pctText(s.monthPct)}</span></div>
-            <div class="progress" style="margin-top:10px"><div class="bar" style="width:${s.progressBar}%"></div></div>
-            <div class="grid3" style="margin-top:12px">
-              <div class="box"><div class="eyebrow">Wins</div><div class="big" style="font-size:24px">${s.counts.win}</div></div>
-              <div class="box"><div class="eyebrow">Loss</div><div class="big" style="font-size:24px;color:var(--danger)">${s.counts.loss}</div></div>
-              <div class="box"><div class="eyebrow">BE</div><div class="big" style="font-size:24px;color:var(--warn)">${s.counts.be}</div></div>
-            </div>
-            <div class="recordActions" style="margin-top:12px"><button class="btn tiny alt" data-edit-account="${i}">Editar</button><button class="btn tiny danger" data-delete-account="${i}">Excluir</button></div>
-          </div>`;
-        }).join(''):`<div class="empty">Nenhuma conta ou mesa cadastrada ainda.</div>`}
-      </div>
-    </div>`;
-
-  $('#newAccount').onclick=(e)=>{e.stopPropagation();openAccountModal()};
-  $('#prevAccountMonth').onclick=(e)=>{e.stopPropagation();let m=state.accountReport.month-1,y=state.accountReport.year;if(m<0){m=11;y--}state.accountReport.month=m;state.accountReport.year=y;save(true);renderContas()};
-  $('#nextAccountMonth').onclick=(e)=>{e.stopPropagation();let m=state.accountReport.month+1,y=state.accountReport.year;if(m>11){m=0;y++}state.accountReport.month=m;state.accountReport.year=y;save(true);renderContas()};
-  $('#resetAccountMonth').onclick=(e)=>{e.stopPropagation();state.accountReport={year:nowDate.getFullYear(),month:nowDate.getMonth()};save(true);renderContas()};
-  view.querySelectorAll('[data-edit-account]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();openAccountModal(Number(b.dataset.editAccount))});
-  view.querySelectorAll('[data-delete-account]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();state.accounts.splice(Number(b.dataset.deleteAccount),1);save(true);render();toast('Conta/mesa removida')});
-}
-
-function renderChecklist(){
-  const done=state.checkStatus.filter(Boolean).length;
-  $('#view-checklist').innerHTML=`
-    <div class="grid2">
-      <div class="card">
-        ${state.checklist.map((item,i)=>`<label class="box" style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><span>${item}</span><input type="checkbox" data-check="${i}" ${state.checkStatus[i]?'checked':''}></label>`).join('')}
-      </div>
-      <div class="card"><div class="sectionTitle">Leitura rápida</div><div class="box"><div class="eyebrow">Pronto para operar</div><div class="big">${Math.round(done/state.checkStatus.length*100)}%</div></div></div>
-    </div>`;
-  $('#view-checklist').querySelectorAll('[data-check]').forEach(c=>c.onchange=()=>{state.checkStatus[Number(c.dataset.check)]=c.checked;save(true);renderChecklist()});
-}
-
-function renderBacktesting(){
-  $('#view-backtesting').innerHTML=`<div class="card"><div class="sectionTitle">Backtesting</div><div class="empty">Área pronta para expansão.</div></div>`;
-}
-
-function renderAnalises(){
-  const view=$('#view-analises'),
-        entries=monthEntriesFor(state.analysisMonth.year,state.analysisMonth.month).sort((a,b)=>b.key.localeCompare(a.key)),
-        label=`${monthNames[state.analysisMonth.month]} ${state.analysisMonth.year}`,
-        focusDate=keyFromYMD(state.analysisMonth.year,state.analysisMonth.month,1);
-
-  view.innerHTML=`
-    <div class="grid2">
-      <div class="card">
-        <div class="sectionTitle">Escolha o dia do registro</div>
-        <div class="field" style="margin-top:12px"><label class="fieldLabel">Data</label><input id="analysisQuickDate" type="date" value="${focusDate}"></div>
-        <div class="actions" style="margin-top:12px"><button class="btn primary" id="openChosenDate">Abrir registro</button><button class="btn alt" id="createChosenDate">Criar / editar</button></div>
-      </div>
-      <div class="card"><div class="sectionTitle">Resumo visual</div><div class="muted" style="margin-top:8px">Use a seleção de data ao lado para abrir o dia que quiser.</div></div>
-    </div>
-
-    <div class="card" style="margin-top:16px">
-      <div class="analysisMonthBar">
-        <div><div class="sectionTitle">Minhas análises</div><div style="font-size:18px;font-weight:800;color:var(--accent)">${label}</div></div>
-        <div class="actions"><button class="btn tiny alt" id="prevAnalysisMonth">←</button><button class="btn tiny alt" id="resetAnalysisMonth">Atual</button><button class="btn tiny alt" id="nextAnalysisMonth">→</button></div>
-      </div>
-      <div class="cards" style="margin-top:12px">
-        ${entries.length?entries.map(e=>{
-          const imgs=e.images||[],idx=((state.previewIndex[e.key]||0)%Math.max(imgs.length,1)),img=imgs[idx];
-          return `<div class="card ${e.status||'neutral'}">
-            <div class="head">
-              <div><div style="font-size:16px;font-weight:700">${e.key}</div><div class="muted">${e.asset||'Sem ativo'} · ${statusLabels[e.status||'neutral']} · ${getAccountNameById(e.accountId)}</div></div>
-              <div class="recordActions"><button class="btn tiny alt" data-edit-day="${e.key}">Editar</button><button class="btn tiny danger" data-delete-day="${e.key}">Excluir</button></div>
-            </div>
-            ${img?`<div class="preview" style="margin-top:12px"><img src="${img}" alt="print"><div class="overlay"><div class="overlayTop">${imgs.length>1?`<button class="previewNav" data-prev-preview="${e.key}">‹</button><div class="previewCount">${idx+1}/${imgs.length}</div><button class="previewNav" data-next-preview="${e.key}">›</button>`:`<div></div><div class="previewCount">1/1</div><div></div>`}</div><button class="btn primary tiny overlayAction" data-open-analysis="${e.key}">Ver análise</button></div></div>`:`<div class="empty" style="margin-top:12px">Sem print</div>`}
-            <div class="actions" style="justify-content:flex-start;margin-top:12px"><span class="chip">${e.direction||'Sem direção'}</span><span class="chip">${e.setup||'Sem setup'}</span><span class="chip">${e.timeframe||'Sem timeframe'}</span><span class="chip">${entryPnlLabel(e)}</span>${Number.isFinite(num(e.rr))?`<span class="chip">${Number(e.rr).toFixed(2)}R</span>`:''}</div>
-            <div style="margin-top:12px">${e.note||e.bias||e.lesson||e.emotionNote||'Sem observação adicional.'}</div>
-          </div>`;
-        }).join(''):`<div class="empty">Nenhum registro salvo nesse mês.</div>`}
-      </div>
-    </div>`;
-
-  $('#openChosenDate').onclick=(e)=>{e.stopPropagation();const v=$('#analysisQuickDate').value;if(!v)return;const [y,m,d]=v.split('-').map(Number);openDayModal(y,m-1,d)};
-  $('#createChosenDate').onclick=(e)=>{e.stopPropagation();const v=$('#analysisQuickDate').value;if(!v)return;const [y,m,d]=v.split('-').map(Number);openDayModal(y,m-1,d)};
-  $('#prevAnalysisMonth').onclick=(e)=>{e.stopPropagation();let m=state.analysisMonth.month-1,y=state.analysisMonth.year;if(m<0){m=11;y--}state.analysisMonth.month=m;state.analysisMonth.year=y;save(true);renderAnalises()};
-  $('#nextAnalysisMonth').onclick=(e)=>{e.stopPropagation();let m=state.analysisMonth.month+1,y=state.analysisMonth.year;if(m>11){m=0;y++}state.analysisMonth.month=m;state.analysisMonth.year=y;save(true);renderAnalises()};
-  $('#resetAnalysisMonth').onclick=(e)=>{e.stopPropagation();state.analysisMonth={year:nowDate.getFullYear(),month:nowDate.getMonth()};save(true);renderAnalises()};
-  view.querySelectorAll('[data-edit-day]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();const p=parseKey(b.dataset.editDay);openDayModal(p.year,p.month,p.day)});
-  view.querySelectorAll('[data-delete-day]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();delete state.entries[b.dataset.deleteDay];save(true);render();toast('Registro diário excluído')});
-  view.querySelectorAll('[data-open-analysis]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();const entry=state.entries[b.dataset.openAnalysis];openViewer(entry.images||[],b.dataset.openAnalysis,entry,state.previewIndex[b.dataset.openAnalysis]||0,b.dataset.openAnalysis)});
-  view.querySelectorAll('[data-prev-preview]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();const entry=state.entries[b.dataset.prevPreview];if(!entry||!entry.images||entry.images.length<2)return;state.previewIndex[b.dataset.prevPreview]=(((state.previewIndex[b.dataset.prevPreview]||0)-1)+entry.images.length)%entry.images.length;save(true);renderAnalises()});
-  view.querySelectorAll('[data-next-preview]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();const entry=state.entries[b.dataset.nextPreview];if(!entry||!entry.images||entry.images.length<2)return;state.previewIndex[b.dataset.nextPreview]=((state.previewIndex[b.dataset.nextPreview]||0)+1)%entry.images.length;save(true);renderAnalises()});
-}
-
-function renderThemes(){
-  const view=$('#view-temas');
-  view.innerHTML=`<div class="card"><div class="head"><div><div class="sectionTitle">Temas do projeto</div></div><span class="badge">${THEMES.length} temas</span></div><div class="grid3" style="margin-top:12px">${THEMES.map(t=>`<button class="themeCard" data-theme="${t}"><div class="box">${t}</div></button>`).join('')}</div></div>`;
-  view.querySelectorAll('[data-theme]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();document.body.dataset.theme=b.dataset.theme;save(true);toast('Tema aplicado: '+b.dataset.theme)});
-}
-
-function openDayModal(y,m,d){
-  ensureAccountIds();
-  fillOptions();
-  state.modalDate={year:y,month:m,day:d};
-  const key=keyFromYMD(y,m,d),entry=state.entries[key]||{},active=state.accounts.filter(a=>a.status==='Ativa');
-  fillAccountOptions(entry.accountId||((!entry.accountId&&active.length===1)?active[0].id:''));
-  state.dayImages=[...(entry.images||[])];
-  state.dayMoods=[...(entry.emotions||[])];
-  $('#dayModalTitle').textContent=`${d} de ${monthNames[m]} de ${y}`;
-  $('#dayDate').value=key;
-  $('#dayStatus').value=entry.status||'';
-  $('#dayAsset').value=entry.asset||ASSETS[0];
-  $('#dayDirection').value=entry.direction||DIRECTIONS[0];
-  $('#daySetup').value=entry.setup||SETUPS[0];
-  $('#dayTf').value=entry.timeframe||TIMEFRAMES[2];
-  $('#dayPnl').value=entry.pnl!==undefined&&entry.pnl!==''?entry.pnl:'';
-  $('#dayRR').value=entry.rr!==undefined&&entry.rr!==''?entry.rr:'';
-  $('#dayBias').value=entry.bias||'';
-  $('#dayNote').value=entry.note||'';
-  $('#dayLesson').value=entry.lesson||'';
-  $('#dayEmotionNote').value=entry.emotionNote||'';
-  $('#customMood').value='';
-  renderMoods();
-  renderDayThumbs();
-  refreshDayStats();
-  $('#dayModalBack').classList.add('show');
-}
-
-function closeDayModal(){
-  $('#dayModalBack').classList.remove('show');
-  $('#dayImages').value='';
-}
-
-function renderMoods(){
-  $('#moodList').innerHTML=MOODS.map(m=>`<button type="button" class="mood ${state.dayMoods.includes(m)?'active':''}" data-mood="${m}">${m}</button>`).join('');
-  $('#moodList').querySelectorAll('[data-mood]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();const m=b.dataset.mood;state.dayMoods=state.dayMoods.includes(m)?state.dayMoods.filter(x=>x!==m):[...state.dayMoods,m];renderMoods()});
-  $('#selectedMoods').innerHTML=state.dayMoods.length?state.dayMoods.map(m=>`<span class="chip">${m}</span>`).join(''):`<span class="muted">Nenhum comportamento selecionado.</span>`;
-}
-
-function collectDayDraft(){
-  return {
-    status:$('#dayStatus').value,
-    asset:$('#dayAsset').value,
-    direction:$('#dayDirection').value,
-    setup:$('#daySetup').value,
-    timeframe:$('#dayTf').value,
-    accountId:$('#dayAccount').value,
-    pnl:$('#dayPnl').value.trim(),
-    rr:$('#dayRR').value.trim(),
-    bias:$('#dayBias').value.trim(),
-    note:$('#dayNote').value.trim(),
-    lesson:$('#dayLesson').value.trim(),
-    emotionNote:$('#dayEmotionNote').value.trim(),
-    emotions:[...state.dayMoods],
-    images:[...state.dayImages]
-  };
-}
-
-function renderDayThumbs(){
-  const box=$('#dayThumbs');
-  if(!state.dayImages.length){
-    box.className='empty';
-    box.innerHTML='Nenhum print salvo para esse dia.';
-    refreshDayStats();
-    return;
-  }
-  box.className='thumbs';
-  box.innerHTML=state.dayImages.map((src,i)=>`<div class="thumb"><img src="${src}" alt="print"><div class="recordActions" style="margin-top:8px"><button class="btn tiny alt" data-open-img="${i}">Abrir</button><button class="btn tiny danger" data-del-img="${i}">Excluir</button></div></div>`).join('');
-  box.querySelectorAll('[data-open-img]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();const draft=collectDayDraft();openViewer(state.dayImages,$('#dayDate').value,draft,Number(b.dataset.openImg),$('#dayDate').value)});
-  box.querySelectorAll('[data-del-img]').forEach(b=>b.onclick=(e)=>{e.stopPropagation();state.dayImages.splice(Number(b.dataset.delImg),1);renderDayThumbs()});
-  refreshDayStats();
-}
-
-function refreshDayStats(){
-  const draft=collectDayDraft();
-  const val=$('#dayDate').value||keyFromDate(nowDate);
-  const parts=val.split('-').map(Number);
-  $('#statDay').textContent=String(parts[2]||'--').padStart(2,'0');
-  $('#statStatus').textContent=statusLabels[draft.status||'neutral']||'Sem status';
-  $('#statAsset').textContent=(draft.asset||'--').slice(0,6);
-  $('#statImgs').textContent=String(state.dayImages.length);
-}
-
-function hasDayContent(e){
-  return !!(e.status||e.asset||e.direction||e.setup||e.timeframe||e.accountId||e.bias||e.note||e.lesson||e.emotionNote||e.pnl||e.rr||(e.emotions&&e.emotions.length)||(e.images&&e.images.length));
-}
-
-function saveDay(){
-  const oldKey=keyFromYMD(state.modalDate.year,state.modalDate.month,state.modalDate.day),newKey=$('#dayDate').value||oldKey,draft=collectDayDraft();
-  if(oldKey!==newKey) delete state.entries[oldKey];
-  if(!hasDayContent(draft)) delete state.entries[newKey];
-  else state.entries[newKey]=draft;
-  save(true);
-  closeDayModal();
-  render();
-  toast('Registro diário salvo');
-}
-
-function deleteDay(){
-  const key=$('#dayDate').value||keyFromYMD(state.modalDate.year,state.modalDate.month,state.modalDate.day);
-  delete state.entries[key];
-  save(true);
-  closeDayModal();
-  render();
-  toast('Registro removido');
-}
-
-function addCustomMood(){
-  const v=$('#customMood').value.trim();
-  if(!v) return;
-  if(!state.dayMoods.includes(v)) state.dayMoods=[...state.dayMoods,v];
-  $('#customMood').value='';
-  renderMoods();
-}
-
-function compressImage(file,maxWidth=1280,quality=.78){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=()=>{
-      const img=new Image();
-      img.onload=()=>{
-        const scale=Math.min(1,maxWidth/img.width);
-        const canvas=document.createElement('canvas');
-        canvas.width=Math.round(img.width*scale);
-        canvas.height=Math.round(img.height*scale);
-        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-        resolve(canvas.toDataURL('image/jpeg',quality));
-      };
-      img.onerror=reject;
-      img.src=reader.result;
-    };
-    reader.onerror=reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-function openAccountModal(index=null){
-  ensureAccountIds();
-  state.accountEdit=index;
-  const item=index==null?{id:createId('acc'),name:'',category:'Conta',type:'',balance:'',phaseCount:1,status:'Ativa',progress:0,phase1Goal:'',phase2Goal:'',phase3Goal:'',riskPercent:'',riskValue:'',notes:''}:normalizeAccount(state.accounts[index]);
-  $('#accountTitle').textContent=index==null?'Nova conta ou mesa':'Editar conta ou mesa';
-  $('#accountName').value=item.name||'';
-  $('#accountCategory').value=item.category||'Conta';
-  $('#accountType').value=item.type||'';
-  $('#accountBalance').value=item.balance||'';
-  $('#accountPhaseCount').value=String(item.phaseCount||1);
-  $('#accountStatus').value=item.status||'Ativa';
-  $('#accountProgress').value=Number(item.progress)||0;
-  $('#phase1Goal').value=item.phase1Goal||'';
-  $('#phase2Goal').value=item.phase2Goal||'';
-  $('#phase3Goal').value=item.phase3Goal||'';
-  $('#riskPercent').value=item.riskPercent||'';
-  $('#riskValue').value=item.riskValue||'';
-  $('#accountNotes').value=item.notes||'';
-  togglePhaseGoalFields();
-  $('#deleteAccountBtn').style.display=index==null?'none':'inline-flex';
-  $('#accountModalBack').classList.add('show');
-}
-
-function closeAccountModal(){
-  $('#accountModalBack').classList.remove('show');
-  state.accountEdit=null;
-}
-
-function saveAccount(){
-  const base=state.accountEdit==null?{id:createId('acc')}:{...state.accounts[state.accountEdit]};
-  const draft={
-    id:base.id,
-    name:$('#accountName').value.trim()||'Nova conta',
-    category:$('#accountCategory').value,
-    type:$('#accountType').value.trim()||'Sem tipo',
-    balance:$('#accountBalance').value.trim()||'0',
-    phaseCount:Number($('#accountPhaseCount').value||1),
-    status:$('#accountStatus').value,
-    progress:Number($('#accountProgress').value)||0,
-    phase1Goal:$('#phase1Goal').value.trim(),
-    phase2Goal:$('#phase2Goal').value.trim(),
-    phase3Goal:$('#phase3Goal').value.trim(),
-    riskPercent:$('#riskPercent').value.trim(),
-    riskValue:$('#riskValue').value.trim(),
-    notes:$('#accountNotes').value.trim()
-  };
-  if(state.accountEdit==null) state.accounts.unshift(normalizeAccount(draft));
-  else state.accounts[state.accountEdit]=normalizeAccount(draft);
-  save(true);
-  closeAccountModal();
-  render();
-  toast('Conta/mesa salva');
-}
-
-function deleteAccount(){
-  if(state.accountEdit==null) return;
-  state.accounts.splice(state.accountEdit,1);
-  save(true);
-  closeAccountModal();
-  render();
-  toast('Conta/mesa removida');
-}
-
-function openViewer(images,label,entry,start=0,key=''){
-  state.viewer={images:images||[],index:Math.max(0,start||0),label,entry:entry||{},key:key||label};
-  renderViewer();
-  $('#viewerBack').classList.add('show');
-}
-
-function renderViewer(){
-  const src=state.viewer.images[state.viewer.index]||'';
-  $('#viewerTitle').textContent=state.viewer.label||'Print';
-  $('#viewerImage').innerHTML=src?`<img src="${src}" alt="print"><div class="viewerHover"><div class="viewerTopNav">${state.viewer.images.length>1?`<button class="viewerNav" id="viewerPrev">‹</button><div class="viewerCounter">${state.viewer.index+1}/${state.viewer.images.length}</div><button class="viewerNav" id="viewerNext">›</button>`:`<div></div><div class="viewerCounter">1/1</div><div></div>`}</div><div class="actions" style="justify-content:center"><button class="btn primary tiny" id="openViewerImage">Abrir imagem</button></div></div>`:`<div class="empty">Sem imagem salva para este dia.</div>`;
-  const e=state.viewer.entry||{};
-  $('#viewerInfo').innerHTML=`<div class="viewerCard"><div class="sectionTitle">Resumo operacional</div><div class="actions" style="justify-content:flex-start"><span class="chip">${statusLabels[e.status||'neutral']}</span><span class="chip">${e.asset||'Sem ativo'}</span><span class="chip">${e.setup||'Sem setup'}</span><span class="chip">${e.timeframe||'Sem timeframe'}</span><span class="chip">${getAccountNameById(e.accountId)}</span><span class="chip">${entryPnlLabel(e)}</span>${Number.isFinite(num(e.rr))?`<span class="chip">${Number(e.rr).toFixed(2)}R</span>`:''}</div></div><div class="viewerCard"><div class="sectionTitle">Narrativa</div><div>${e.bias||'Sem narrativa'}</div></div>`;
-
-  if($('#viewerPrev')) $('#viewerPrev').onclick=(e)=>{e.stopPropagation();state.viewer.index=(state.viewer.index-1+state.viewer.images.length)%state.viewer.images.length;renderViewer()};
-  if($('#viewerNext')) $('#viewerNext').onclick=(e)=>{e.stopPropagation();state.viewer.index=(state.viewer.index+1)%state.viewer.images.length;renderViewer()};
-  if($('#openViewerImage')) $('#openViewerImage').onclick=(e)=>{e.stopPropagation();$('#imagePageImg').src=src;$('#imagePageBack').classList.add('show')};
-  $('#editViewerRecord').onclick=(e)=>{e.stopPropagation();const p=parseKey(state.viewer.key);closeViewer();openDayModal(p.year,p.month,p.day)};
-}
-
-function closeViewer(){
-  $('#viewerBack').classList.remove('show');
-}
-
-function render(){
-  ensureAccountIds();
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  const map={'Dashboard':'view-dashboard','Performance':'view-performance','Simulador':'view-simulador','Contas':'view-contas','Checklist':'view-checklist','Backtesting':'view-backtesting','Minhas Análises':'view-analises','Temas':'view-temas'};
-  renderNav();
-  renderHero();
-  renderDashboard();
-  renderPerformance();
-  renderSimulador();
-  renderContas();
-  renderChecklist();
-  renderBacktesting();
-  renderAnalises();
-  renderThemes();
-  $('#'+map[state.activeNav]).classList.add('active');
-}
-
-function bind(){
-  document.addEventListener('click',e=>{
-    const allowed=e.target.closest('[data-day],[data-open-analysis],[data-open-img],.preview img,#openViewerImage,#viewerPrev,#viewerNext,#editViewerRecord,.btn,button,input,select,textarea,label,.nav');
-    if(e.target.id==='dayModalBack') return closeDayModal();
-    if(e.target.id==='accountModalBack') return closeAccountModal();
-    if(e.target.id==='viewerBack') return closeViewer();
-    if(e.target.id==='imagePageBack') return $('#imagePageBack').classList.remove('show');
-    if(!allowed){ return; }
-  });
-
-  document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){
-      if($('#imagePageBack').classList.contains('show')) $('#imagePageBack').classList.remove('show');
-      else if($('#viewerBack').classList.contains('show')) closeViewer();
-      else if($('#accountModalBack').classList.contains('show')) closeAccountModal();
-      else if($('#dayModalBack').classList.contains('show')) closeDayModal();
-    }
-  });
-
-  $('#saveBtn').onclick=(e)=>{e.stopPropagation();save()};
-  $('#newDayShortcut').onclick=(e)=>{e.stopPropagation();openDayModal(nowDate.getFullYear(),nowDate.getMonth(),nowDate.getDate())};
-  $('#closeDayModal').onclick=(e)=>{e.stopPropagation();closeDayModal()};
-  $('#saveDayBtn').onclick=(e)=>{e.stopPropagation();saveDay()};
-  $('#deleteDayBtn').onclick=(e)=>{e.stopPropagation();deleteDay()};
-  $('#addMoodBtn').onclick=(e)=>{e.stopPropagation();addCustomMood()};
-  $('#customMood').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addCustomMood()}});
-  $('#dayImages').addEventListener('change',async e=>{
-    e.stopPropagation();
-    const files=Array.from(e.target.files||[]);
-    for(const file of files){
-      if(state.dayImages.length>=4){toast('Limite de 4 imagens por dia');break}
-      try{state.dayImages.push(await compressImage(file))}
-      catch{toast('Não foi possível processar uma imagem')}
-    }
-    e.target.value='';
-    renderDayThumbs();
-  });
-
-  ['#dayStatus','#dayAsset','#dayDirection','#daySetup','#dayTf','#dayPnl','#dayRR','#dayAccount','#dayDate'].forEach(sel=>$(sel).addEventListener('change',refreshDayStats));
-
-  $('#closeAccountModal').onclick=(e)=>{e.stopPropagation();closeAccountModal()};
-  $('#saveAccountBtn').onclick=(e)=>{e.stopPropagation();saveAccount()};
-  $('#deleteAccountBtn').onclick=(e)=>{e.stopPropagation();deleteAccount()};
-  ['#accountPhaseCount','#accountProgress','#phase1Goal','#phase2Goal','#phase3Goal','#accountStatus'].forEach(sel=>$(sel).addEventListener('input',updateAccountPhasePreview));
-  $('#accountPhaseCount').addEventListener('change',togglePhaseGoalFields);
-
-  $('#closeViewer').onclick=(e)=>{e.stopPropagation();closeViewer()};
-  $('#closeImagePage').onclick=(e)=>{e.stopPropagation();$('#imagePageBack').classList.remove('show')};
-}
-
-load();
-fillOptions();
-ensureAccountIds();
-bind();
-render();
+function accountSyncData(account,y,m){const a=normalizeAccount(account),entries=monthEntriesForAccount(y,m,a.id),counts=countsFromEntries(entries),netPnl=entriesNetPnl(entries),balance=num(a.balance),monthPct=Number.isFinite(balance)&&balance!==0?(netPnl/balance)*100:0,baseProgress=num(a.progress)||0;let totalPct=baseProgress+monthPct,step=1,phase1=num(a.phase1Goal)||0,phase2=num(a.phase2Goal)||0,phase3=num(a.phase3Goal)||0;if(a.phaseCount>=2&&phase1>0&&totalPct>=phase1){totalPct-=phase1;step=2}if(a.phaseCount>=3&&step===2&&phase2>0&&totalPct>=phase2){totalPct-=phase2;step=3}const currentGoal=step===1?phase1:step===2?phase2:phase3;return{counts,netPnl,phaseLabel:phaseLabel(a.phaseCount),currentPct:totalPct,progressBar:currentGoal>0?Math.max(0,Math.min(100,totalPct/currentGoal*100)):Math.max(0,Math.min(100,totalPct)),monthPct}}
+function fillOptions(){$('#dayAsset').innerHTML=ASSETS.map(v=>`<option value="${v}">${v}</option>`).join('');$('#dayDirection').innerHTML=DIRECTIONS.map(v=>`<option value="${v}">${v}</option>`).join('');$('#daySetup').innerHTML=SETUPS.map(v=>`<option value="${v}">${v}</option>`).join('');$('#dayTf').innerHTML=TIMEFRAMES.map(v=>`<option value="${v}">${v}</option>`).join('')}
+function fillAccountOptions(selected=''){ensureAccountIds();const list=[...state.accounts].sort((a,b)=>((a.status==='Ativa')===(b.status==='Ativa')?String(a.name).localeCompare(String(b.name)):a.status==='Ativa'?-1:1));$('#dayAccount').innerHTML=[`<option value="">Sem vínculo</option>`,...list.map(a=>`<option value="${a.id}">${accountDisplayLabel(a)}</option>`)].join('');$('#dayAccount').value=selected||''}
+function togglePhaseGoalFields(){const count=Number($('#accountPhaseCount').value||1);const p2=$('#phase2Goal').closest('.field'),p3=$('#phase3Goal').closest('.field');p2.style.display=count>=2?'grid':'none';p3.style.display=count>=3?'grid':'none';if(count<2)$('#phase2Goal').value='';if(count<3)$('#phase3Goal').value='';updateAccountPhasePreview()}
+function updateAccountPhasePreview(){$('#accountPhaseAuto').textContent='Automática · '+phaseLabel(Number($('#accountPhaseCount').value||1))}
+function renderNav(){const nav=$('#nav');nav.innerHTML=NAVS.map(n=>`<button class="${state.activeNav===n?'active':''}" data-nav="${n}">${n}</button>`).join('');nav.querySelectorAll('[data-nav]').forEach(b=>b.onclick=e=>{e.stopPropagation();state.activeNav=b.dataset.nav;render()})}
+function renderHero(){const c=monthCounts();$('#heroStats').innerHTML=`<div class="box"><div class="eyebrow">Wins</div><div class="big">${c.win}</div></div><div class="box"><div class="eyebrow">Loss</div><div class="big" style="color:var(--danger)">${c.loss}</div></div><div class="box"><div class="eyebrow">BE</div><div class="big" style="color:var(--warn)">${c.be}</div></div><div class="box"><div class="eyebrow">Registros</div><div class="big">${c.registered}</div></div><div class="box"><div class="eyebrow">Win rate</div><div class="big">${winRate()}%</div></div>`}
+function renderMoodCard(){return ''}
+function renderDashboardStudyFocus(){const lastStudy=state.studies[0];return `<div class="card mentorFocusCard"><div class="head"><div><div class="sectionTitle">Trade Journal de estudos</div><div class="muted">Mentoria atual e último estudo salvo.</div></div><span class="badge">estudos</span></div><div style="font-size:18px;font-weight:800;margin-top:10px">${state.currentMentorship||'Sem mentoria atual'}</div><div class="muted" style="margin-top:6px">${state.studies.length} estudo(s) salvo(s)</div>${lastStudy?`<div class="box" style="margin-top:12px"><div class="eyebrow">Último estudo</div><div style="font-size:16px;font-weight:700;margin-top:8px">${lastStudy.title||'Estudo'}</div><div class="muted" style="margin-top:4px">${lastStudy.date||'Sem data'} · ${lastStudy.timeframe||'Sem timeframe'} · ${lastStudy.operational||'Nenhum'}</div><div style="margin-top:8px">${lastStudy.summary||'Sem resumo.'}</div></div>`:`<div class="empty" style="margin-top:12px">Nenhum estudo salvo ainda.</div>`}</div>`}
+function renderDashboardMesaVisual(){const active=[...state.accounts].map(normalizeAccount).filter(a=>a.status==='Ativa').slice(0,3);return `<div class="card dashboardMesaCard"><div class="head"><div><div class="sectionTitle">Mesas em visualização</div><div class="muted">Resumo rápido das mesas ativas.</div></div><span class="badge">${active.length} ativa(s)</span></div>${active.length?`<div class="cards" style="margin-top:12px">${active.map(a=>{const s=accountSyncData(a,state.accountReport.year,state.accountReport.month);return `<div class="dashboardMesaMini"><div class="dashboardMesaHead"><div><h4>${a.name}</h4><div class="dashboardMesaMeta">${a.balance||'Sem saldo'} · ${a.phaseLabel}</div></div><span class="chip">${pctText(s.monthPct)}</span></div><div class="dashboardMesaChips"><span class="chip">${s.counts.win}W</span><span class="chip">${s.counts.loss}L</span><span class="chip">${s.counts.be}BE</span></div><div class="progress"><div class="bar" style="width:${s.progressBar}%"></div></div><div class="dashboardMesaStats"><div class="dashboardMesaStat"><span class="eyebrow">Resultado</span><span class="value">${fmtMoney(s.netPnl)}</span></div><div class="dashboardMesaStat"><span class="eyebrow">Fase atual</span><span class="value">${pctText(s.currentPct)}</span></div></div></div>`}).join('')}</div>`:`<div class="empty" style="margin-top:12px">Cadastre uma conta ou mesa em Contas para visualizar aqui.</div>`}</div>`}
+function openCalendarDayViewer(y,m,d){const key=keyFromYMD(y,m,d);const entry=state.entries[key]||{type:'day',status:'',asset:'',direction:'',setup:'',timeframe:'',bias:'',note:'',lesson:'',emotionNote:'',emotions:[],images:[],pnl:'',rr:'',accountId:''};openViewer(entry.images||[],key,entry,state.previewIndex[key]||0,key)}
+function renderDashboard(){const view=$('#view-dashboard'),year=state.calendar.year,month=state.calendar.month,c=monthCountsFor(year,month),first=new Date(year,month,1).getDay(),dim=new Date(year,month+1,0).getDate();let cal=weekdays.map(w=>`<div class="weekday">${w}</div>`).join('');for(let i=0;i<first;i++)cal+=`<div class="day empty"></div>`;for(let d=1;d<=dim;d++){const key=keyFromYMD(year,month,d),entry=state.entries[key],status=(entry?.status)||'neutral';cal+=`<button type="button" class="day ${status}" data-day="${d}"><div class="monthDayContent"><span class="monthDayNum">${d}</span>${entry&&status!=='neutral'?`<span class="tag monthDayTag">${statusLabels[status]}</span>`:''}</div></button>`}view.innerHTML=`<div class="grid4"><div class="box"><div class="eyebrow">Wins do mês</div><div class="big">${c.win}</div></div><div class="box"><div class="eyebrow">Loss do mês</div><div class="big" style="color:var(--danger)">${c.loss}</div></div><div class="box"><div class="eyebrow">BE</div><div class="big" style="color:var(--warn)">${c.be}</div></div><div class="box"><div class="eyebrow">P&L</div><div class="big">${fmtMoney(monthNetPnlFor(year,month))}</div></div></div><div class="dashboardMain" style="margin-top:16px"><div class="card"><div class="calendarTop"><div><div class="sectionTitle">Calendário mensal</div><div class="muted">${monthNames[month]} ${year}</div></div><div class="actions"><button class="btn tiny alt" id="prevMonth">←</button><button class="btn tiny alt" id="nextMonth">→</button></div></div><div class="calendar" style="margin-top:12px">${cal}</div></div><div class="dashboardSide">${renderDashboardStudyFocus()}${renderDashboardMesaVisual()}<div class="card"><div class="sectionTitle">Feed do mês</div>${monthEntriesFor(year,month).sort((a,b)=>b.key.localeCompare(a.key)).slice(0,4).map(i=>`<div class="box" style="margin-top:10px"><strong>${i.key}</strong><div class="muted">${i.asset||'Sem ativo'} · ${statusLabels[i.status||'neutral']} · ${getAccountNameById(i.accountId)}</div><div style="margin-top:6px">${i.note||i.bias||i.lesson||'Registro salvo'}</div></div>`).join('')||`<div class="empty">Nenhum registro salvo ainda.</div>`}</div></div></div>`;$('#prevMonth').onclick=e=>{e.stopPropagation();let m=state.calendar.month-1,y=state.calendar.year;if(m<0){m=11;y--}state.calendar.month=m;state.calendar.year=y;save(true);render()};$('#nextMonth').onclick=e=>{e.stopPropagation();let m=state.calendar.month+1,y=state.calendar.year;if(m>11){m=0;y++}state.calendar.month=m;state.calendar.year=y;save(true);render()};view.querySelectorAll('[data-day]').forEach(b=>b.onclick=e=>{e.stopPropagation();openCalendarDayViewer(state.calendar.year,state.calendar.month,Number(b.dataset.day))})}
+function renderPerformance(){$('#view-performance').innerHTML=`<div class="grid4"><div class="box"><div class="eyebrow">P&L mensal</div><div class="big">${fmtMoney(monthNetPnlFor(state.calendar.year,state.calendar.month))}</div></div><div class="box"><div class="eyebrow">RR médio</div><div class="big">${Number.isFinite(monthAvgRRFor(state.calendar.year,state.calendar.month))?monthAvgRRFor(state.calendar.year,state.calendar.month).toFixed(2)+'R':'—'}</div></div><div class="box"><div class="eyebrow">Dias registrados</div><div class="big">${monthCounts().registered}</div></div><div class="box"><div class="eyebrow">Win rate</div><div class="big">${winRate()}%</div></div></div>`}
+function renderSimulador(){$('#view-simulador').innerHTML=`<div class="card"><div class="sectionTitle">Simulador</div><div class="empty">Espaço reservado para simulações futuras.</div></div>`}
+function renderContas(){ensureAccountIds();state.accounts=state.accounts.map(normalizeAccount);const r=state.accountReport,view=$('#view-contas');view.innerHTML=`<div class="card"><div class="head"><div><div class="sectionTitle">Contas & mesas</div></div><div class="actions"><button class="btn primary" id="newAccount">+ Nova conta / mesa</button><span class="badge">${state.accounts.length} registros</span></div></div><div class="head" style="margin-top:14px"><div><div class="sectionTitle">Relatório do mês</div><div style="font-size:18px;font-weight:800;color:var(--accent)">${monthNames[r.month]} ${r.year}</div></div><div class="actions"><button class="btn tiny alt" id="prevAccountMonth">←</button><button class="btn tiny alt" id="resetAccountMonth">Atual</button><button class="btn tiny alt" id="nextAccountMonth">→</button></div></div><div class="cards" style="margin-top:16px">${state.accounts.length?state.accounts.map((raw,i)=>{const a=normalizeAccount(raw),s=accountSyncData(a,r.year,r.month);return `<div class="accountCard"><div class="head"><div><div style="font-size:16px;font-weight:700">${a.name}</div><div class="muted">${a.category} · ${a.type||'Sem tipo'} · ${a.balance||'Sem saldo'}</div></div><span class="badge">${a.status}</span></div><div class="big" style="font-size:30px">${a.balance||'$0'}</div><div class="actions" style="justify-content:flex-start;margin-top:10px"><span class="chip">${s.phaseLabel}</span><span class="chip">Resultado mês ${pctText(s.monthPct)}</span></div><div class="progress" style="margin-top:10px"><div class="bar" style="width:${s.progressBar}%"></div></div><div class="grid3" style="margin-top:12px"><div class="box"><div class="eyebrow">Wins</div><div class="big" style="font-size:24px">${s.counts.win}</div></div><div class="box"><div class="eyebrow">Loss</div><div class="big" style="font-size:24px;color:var(--danger)">${s.counts.loss}</div></div><div class="box"><div class="eyebrow">BE</div><div class="big" style="font-size:24px;color:var(--warn)">${s.counts.be}</div></div></div><div class="recordActions" style="margin-top:12px"><button class="btn tiny alt" data-edit-account="${i}">Editar</button><button class="btn tiny danger" data-delete-account="${i}">Excluir</button></div></div>`}).join(''):`<div class="empty">Nenhuma conta ou mesa cadastrada ainda.</div>`}</div></div>`;$('#newAccount').onclick=e=>{e.stopPropagation();openAccountModal()};$('#prevAccountMonth').onclick=e=>{e.stopPropagation();let m=state.accountReport.month-1,y=state.accountReport.year;if(m<0){m=11;y--}state.accountReport.month=m;state.accountReport.year=y;save(true);renderContas()};$('#nextAccountMonth').onclick=e=>{e.stopPropagation();let m=state.accountReport.month+1,y=state.accountReport.year;if(m>11){m=0;y++}state.accountReport.month=m;state.accountReport.year=y;save(true);renderContas()};$('#resetAccountMonth').onclick=e=>{e.stopPropagation();state.accountReport={year:nowDate.getFullYear(),month:nowDate.getMonth()};save(true);renderContas()};view.querySelectorAll('[data-edit-account]').forEach(b=>b.onclick=e=>{e.stopPropagation();openAccountModal(Number(b.dataset.editAccount))});view.querySelectorAll('[data-delete-account]').forEach(b=>b.onclick=e=>{e.stopPropagation();state.accounts.splice(Number(b.dataset.deleteAccount),1);save(true);render();toast('Conta/mesa removida')})}
+function renderBacktesting(){$('#view-backtesting').innerHTML=`<div class="card"><div class="sectionTitle">Backtesting</div><div class="empty">Área pronta para expansão.</div></div>`}
+function renderAnalises(){const view=$('#view-analises'),entries=monthEntriesFor(state.analysisMonth.year,state.analysisMonth.month).sort((a,b)=>b.key.localeCompare(a.key)),label=`${monthNames[state.analysisMonth.month]} ${state.analysisMonth.year}`,focusDate=keyFromYMD(state.analysisMonth.year,state.analysisMonth.month,1);view.innerHTML=`<div class="grid2"><div class="card"><div class="sectionTitle">Escolha o dia do registro</div><div class="field" style="margin-top:12px"><label class="fieldLabel">Data</label><input id="analysisQuickDate" type="date" value="${focusDate}"></div><div class="actions" style="margin-top:12px"><button class="btn primary" id="createChosenDate">Criar / editar</button></div></div><div class="card"><div class="sectionTitle">Resumo visual</div><div class="muted" style="margin-top:8px">Use a seleção de data ao lado para abrir o dia que quiser.</div></div></div><div class="card" style="margin-top:16px"><div class="analysisMonthBar"><div><div class="sectionTitle">Minhas análises</div><div style="font-size:18px;font-weight:800;color:var(--accent)">${label}</div></div><div class="actions"><button class="btn tiny alt" id="prevAnalysisMonth">←</button><button class="btn tiny alt" id="resetAnalysisMonth">Atual</button><button class="btn tiny alt" id="nextAnalysisMonth">→</button></div></div><div class="cards" style="margin-top:12px">${entries.length?entries.map(e=>{const imgs=e.images||[],idx=((state.previewIndex[e.key]||0)%Math.max(imgs.length,1)),img=imgs[idx];return `<div class="card ${e.status||'neutral'}"><div class="head"><div><div style="font-size:16px;font-weight:700">${e.key}</div><div class="muted">${e.asset||'Sem ativo'} · ${statusLabels[e.status||'neutral']} · ${getAccountNameById(e.accountId)}</div></div><div class="recordActions"><button class="btn tiny alt" data-edit-day="${e.key}">Editar</button><button class="btn tiny danger" data-delete-day="${e.key}">Excluir</button></div></div>${img?`<div class="preview" style="margin-top:12px"><img src="${img}" alt="print"><div class="overlay"><div class="overlayTop">${imgs.length>1?`<button class="previewNav" data-prev-preview="${e.key}">‹</button><div class="previewCount">${idx+1}/${imgs.length}</div><button class="previewNav" data-next-preview="${e.key}">›</button>`:`<div></div><div class="previewCount">1/1</div><div></div>`}</div><button class="btn primary tiny overlayAction" data-open-analysis="${e.key}">Ver análise</button></div></div>`:`<div class="empty" style="margin-top:12px">Sem print</div>`}<div class="actions" style="justify-content:flex-start;margin-top:12px"><span class="chip">${e.direction||'Sem direção'}</span><span class="chip">${e.setup||'Sem setup'}</span><span class="chip">${e.timeframe||'Sem timeframe'}</span><span class="chip">${entryPnlLabel(e)}</span>${Number.isFinite(num(e.rr))?`<span class="chip">${Number(e.rr).toFixed(2)}R</span>`:''}</div><div style="margin-top:12px">${e.note||e.bias||e.lesson||e.emotionNote||'Sem observação adicional.'}</div></div>`}).join(''):`<div class="empty">Nenhum registro salvo nesse mês.</div>`}</div></div>`;$('#createChosenDate').onclick=e=>{e.stopPropagation();const v=$('#analysisQuickDate').value;if(!v)return;const [y,m,d]=v.split('-').map(Number);openDayModal(y,m-1,d)};$('#prevAnalysisMonth').onclick=e=>{e.stopPropagation();let m=state.analysisMonth.month-1,y=state.analysisMonth.year;if(m<0){m=11;y--}state.analysisMonth.month=m;state.analysisMonth.year=y;save(true);renderAnalises()};$('#nextAnalysisMonth').onclick=e=>{e.stopPropagation();let m=state.analysisMonth.month+1,y=state.analysisMonth.year;if(m>11){m=0;y++}state.analysisMonth.month=m;state.analysisMonth.year=y;save(true);renderAnalises()};$('#resetAnalysisMonth').onclick=e=>{e.stopPropagation();state.analysisMonth={year:nowDate.getFullYear(),month:nowDate.getMonth()};save(true);renderAnalises()};view.querySelectorAll('[data-edit-day]').forEach(b=>b.onclick=e=>{e.stopPropagation();const p=parseKey(b.dataset.editDay);openDayModal(p.year,p.month,p.day)});view.querySelectorAll('[data-delete-day]').forEach(b=>b.onclick=e=>{e.stopPropagation();delete state.entries[b.dataset.deleteDay];save(true);render();toast('Registro diário excluído')});view.querySelectorAll('[data-open-analysis]').forEach(b=>b.onclick=e=>{e.stopPropagation();const entry=state.entries[b.dataset.openAnalysis];openViewer(entry.images||[],b.dataset.openAnalysis,{...entry,type:'day'},state.previewIndex[b.dataset.openAnalysis]||0,b.dataset.openAnalysis)});view.querySelectorAll('[data-prev-preview]').forEach(b=>b.onclick=e=>{e.stopPropagation();const entry=state.entries[b.dataset.prevPreview];if(!entry||!entry.images||entry.images.length<2)return;state.previewIndex[b.dataset.prevPreview]=(((state.previewIndex[b.dataset.prevPreview]||0)-1)+entry.images.length)%entry.images.length;save(true);renderAnalises()});view.querySelectorAll('[data-next-preview]').forEach(b=>b.onclick=e=>{e.stopPropagation();const entry=state.entries[b.dataset.nextPreview];if(!entry||!entry.images||entry.images.length<2)return;state.previewIndex[b.dataset.nextPreview]=((state.previewIndex[b.dataset.nextPreview]||0)+1)%entry.images.length;save(true);renderAnalises()})}
+function topCount(map,fallback){const items=Object.entries(map);if(!items.length)return[fallback,0];items.sort((a,b)=>b[1]-a[1]);return items[0]}
+function studyReportData(){const total=state.studies.length;const withOperational=state.studies.filter(s=>(s.operational||'Nenhum')!=='Nenhum').length;const withoutOperational=total-withOperational;const tfMap={},mentMap={},opMap={};state.studies.forEach(s=>{const tf=s.timeframe||'Sem timeframe';tfMap[tf]=(tfMap[tf]||0)+1;const ment=s.mentorship||'Sem mentoria';mentMap[ment]=(mentMap[ment]||0)+1;const op=s.operational||'Nenhum';if(op!=='Nenhum')opMap[op]=(opMap[op]||0)+1});const [topTf,topTfCount]=topCount(tfMap,'Sem timeframe');const [topMent,topMentCount]=topCount(mentMap,'Sem mentoria');const ops=Object.entries(opMap).sort((a,b)=>b[1]-a[1]).slice(0,3);return{total,withOperational,withoutOperational,topTf,topTfCount,topMent,topMentCount,ops}}
+function fillStudyForm(study=null){const s=study||{date:keyFromDate(nowDate),title:'',mentorship:state.currentMentorship||'ICT Mentorship 2022',operational:'Nenhum',timeframe:'Sem timeframe',summary:'',insight:'',images:[]};state.studyDraftImages=[...(s.images||[])];state.studyEdit=study?study.id:null;$('#currentMentorship').value=state.currentMentorship||'ICT Mentorship 2022';$('#studyDate').value=s.date||keyFromDate(nowDate);$('#studyTitle').value=s.title||'';$('#studyMentorship').value=s.mentorship||state.currentMentorship||'ICT Mentorship 2022';$('#studyOperational').value=s.operational||'Nenhum';$('#studyTf').value=s.timeframe||'Sem timeframe';$('#studySummary').value=s.summary||'';$('#studyInsight').value=s.insight||'';renderStudyDraftThumbs()}
+function renderStudyDraftThumbs(){const box=$('#studyDraftThumbs');if(!box)return;if(!state.studyDraftImages.length){box.className='empty';box.textContent='Nenhum print salvo para este estudo.';return}box.className='thumbs';box.innerHTML=state.studyDraftImages.map((src,i)=>`<div class="thumb"><img src="${src}" alt="estudo"><div class="recordActions" style="margin-top:8px"><button class="btn tiny alt" data-open-study-img="${i}">Abrir</button><button class="btn tiny danger" data-del-study-img="${i}">Excluir</button></div></div>`).join('');box.querySelectorAll('[data-open-study-img]').forEach(b=>b.onclick=e=>{e.stopPropagation();openViewer(state.studyDraftImages,$('#studyTitle').value||'Estudo',collectStudyDraft(true),Number(b.dataset.openStudyImg),'study-draft')});box.querySelectorAll('[data-del-study-img]').forEach(b=>b.onclick=e=>{e.stopPropagation();state.studyDraftImages.splice(Number(b.dataset.delStudyImg),1);renderStudyDraftThumbs()})}
+function collectStudyDraft(includeId=false){return{...(includeId&&state.studyEdit?{id:state.studyEdit}:{}),type:'study',date:$('#studyDate').value||keyFromDate(nowDate),title:$('#studyTitle').value.trim(),mentorship:($('#studyMentorship').value||'').trim()||'Sem mentoria',operational:$('#studyOperational').value,timeframe:$('#studyTf').value,summary:$('#studySummary').value.trim(),insight:$('#studyInsight').value.trim(),images:[...state.studyDraftImages]}}
+function clearStudyForm(){state.studyEdit=null;fillStudyForm(null)}
+function saveStudy(){const draft=collectStudyDraft(true);state.currentMentorship=($('#currentMentorship').value||'').trim()||'Sem mentoria atual';if(!draft.title)draft.title='Estudo sem título';if(state.studyEdit){const idx=state.studies.findIndex(s=>s.id===state.studyEdit);if(idx>-1)state.studies[idx]=draft}else{draft.id=createId('study');state.studies.unshift(draft)}save(true);clearStudyForm();renderStudies();renderDashboard();toast('Estudo salvo')}
+function deleteStudy(id){state.studies=state.studies.filter(s=>s.id!==id);if(state.studyEdit===id)clearStudyForm();save(true);renderStudies();renderDashboard();toast('Estudo removido')}
+function renderStudies(){const report=studyReportData(),view=$('#view-estudos');view.innerHTML=`<datalist id="mentorshipOptions">${MENTORSHIPS.map(m=>`<option value="${m}"></option>`).join('')}</datalist><div class="studyLayout"><div class="card"><div class="head"><div><div class="sectionTitle">Trade Journal · Estudos</div><div class="muted">Foco em print + texto + mentoria atual.</div></div><span class="badge">trade journal</span></div><div class="grid2" style="margin-top:12px"><div class="field"><label class="fieldLabel">Mentoria atual</label><input id="currentMentorship" list="mentorshipOptions" placeholder="Ex: ICT Mentorship 2022 ou texto livre"></div><div class="field"><label class="fieldLabel">Data do estudo</label><input id="studyDate" type="date"></div></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Título / tema</label><input id="studyTitle" placeholder="Ex: Judas Swing em NY + displacement"></div><div class="grid3" style="margin-top:12px"><div class="field"><label class="fieldLabel">Mentoria deste estudo</label><input id="studyMentorship" list="mentorshipOptions" placeholder="Ex: ICT Mentorship 2017 ou texto livre"></div><div class="field"><label class="fieldLabel">Operacional / modelo ICT</label><select id="studyOperational">${STUDY_MODELS.map(m=>`<option value="${m}">${m}</option>`).join('')}</select></div><div class="field"><label class="fieldLabel">Timeframe</label><select id="studyTf">${STUDY_TIMEFRAMES.map(t=>`<option value="${t}">${t}</option>`).join('')}</select></div></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Resumo do aprendizado</label><textarea id="studySummary" placeholder="Descreva o que você estudou nesse print."></textarea></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Insight / observação</label><textarea id="studyInsight" placeholder="Como isso conversa com o seu operacional?"></textarea></div><div class="field" style="margin-top:12px"><label class="fieldLabel">Prints do estudo</label><input id="studyImages" type="file" accept="image/*" multiple></div><div id="studyDraftThumbs" class="empty" style="margin-top:12px">Nenhum print salvo para este estudo.</div><div class="actions" style="margin-top:14px"><button class="btn alt" id="clearStudyBtn">Novo estudo</button><button class="btn primary" id="saveStudyBtn">Salvar estudo</button></div></div><div class="studyRight"><div class="card"><div class="head"><div><div class="sectionTitle">Relatório do estudo</div><div class="muted">Resumo automático da sua biblioteca.</div></div><button class="btn tiny alt" id="generateStudyReportBtn">Gerar relatório</button></div><div class="grid2" style="margin-top:12px"><div class="box"><div class="eyebrow">Estudos salvos</div><div class="big">${report.total}</div></div><div class="box"><div class="eyebrow">Com operacional</div><div class="big">${report.withOperational}</div></div><div class="box"><div class="eyebrow">Sem operacional</div><div class="big">${report.withoutOperational}</div></div><div class="box"><div class="eyebrow">Timeframe mais usado</div><div class="value">${report.topTf}</div><div class="muted" style="margin-top:6px">${report.topTfCount} estudo(s)</div></div></div><div class="box" style="margin-top:12px"><div class="eyebrow">Mentoria mais recorrente</div><div class="value">${report.topMent}</div><div class="muted" style="margin-top:6px">${report.topMentCount} estudo(s)</div></div><div class="box" style="margin-top:12px"><div class="eyebrow">Modelos mais marcados</div><div class="actions" style="justify-content:flex-start;margin-top:8px">${report.ops.length?report.ops.map(([name,count])=>`<span class="chip">${name} · ${count}</span>`).join(''):'<span class="muted">Nenhum modelo marcado ainda.</span>'}</div></div></div><div class="card"><div class="head"><div><div class="sectionTitle">Biblioteca do trade journal</div><div class="muted">Cards simples com print + texto.</div></div><span class="badge">${state.studies.length} estudos</span></div><div class="cards" style="margin-top:12px">${state.studies.length?state.studies.map(s=>{const key='study-'+s.id,idx=(state.previewIndex[key]||0)%Math.max((s.images||[]).length,1),img=s.images&&s.images.length?s.images[idx]:'';return `<div class="studyCard"><div class="head"><div><div style="font-size:16px;font-weight:700">${s.title||'Estudo'}</div><div class="muted">${s.date||'Sem data'} · ${s.timeframe||'Sem timeframe'} · ${s.mentorship||'Sem mentoria'}</div></div><div class="recordActions"><button class="btn tiny alt" data-edit-study="${s.id}">Editar</button><button class="btn tiny danger" data-delete-study="${s.id}">Excluir</button></div></div>${img?`<div class="preview" style="margin-top:12px"><img src="${img}" alt="estudo"><div class="overlay"><div class="overlayTop">${s.images.length>1?`<button class="previewNav" data-prev-study-preview="${s.id}">‹</button><div class="previewCount">${idx+1}/${s.images.length}</div><button class="previewNav" data-next-study-preview="${s.id}">›</button>`:`<div></div><div class="previewCount">1/1</div><div></div>`}</div><button class="btn primary tiny overlayAction" data-open-study="${s.id}">Ver estudo</button></div></div>`:`<div class="empty" style="margin-top:12px">Sem print</div>`}<div class="actions" style="justify-content:flex-start;margin-top:12px"><span class="chip highlightChip">${s.mentorship||'Sem mentoria'}</span><span class="chip">${s.operational||'Nenhum'}</span><span class="chip">${s.timeframe||'Sem timeframe'}</span></div><div style="margin-top:12px">${s.summary||'Sem resumo.'}</div></div>`}).join(''):`<div class="empty">Nenhum estudo salvo ainda.</div>`}</div></div></div></div>`;fillStudyForm(state.studyEdit?state.studies.find(s=>s.id===state.studyEdit):null);$('#currentMentorship').value=state.currentMentorship||'ICT Mentorship 2022';$('#saveStudyBtn').onclick=e=>{e.stopPropagation();saveStudy()};$('#clearStudyBtn').onclick=e=>{e.stopPropagation();clearStudyForm();renderStudies()};$('#generateStudyReportBtn').onclick=e=>{e.stopPropagation();renderStudies();toast('Relatório do estudo atualizado')};$('#studyImages').onchange=async e=>{e.stopPropagation();const files=Array.from(e.target.files||[]);for(const file of files){if(state.studyDraftImages.length>=10){toast('Limite de 10 imagens por estudo');break}try{state.studyDraftImages.push(await compressImage(file))}catch{toast('Não foi possível processar uma imagem')}}e.target.value='';renderStudyDraftThumbs()};$('#currentMentorship').onchange=e=>{state.currentMentorship=(e.target.value||'').trim()||'Sem mentoria atual';save(true);renderDashboard()};view.querySelectorAll('[data-edit-study]').forEach(b=>b.onclick=e=>{e.stopPropagation();const study=state.studies.find(s=>s.id===b.dataset.editStudy);fillStudyForm(study);window.scrollTo({top:0,behavior:'smooth'})});view.querySelectorAll('[data-delete-study]').forEach(b=>b.onclick=e=>{e.stopPropagation();deleteStudy(b.dataset.deleteStudy)});view.querySelectorAll('[data-open-study]').forEach(b=>b.onclick=e=>{e.stopPropagation();const s=state.studies.find(x=>x.id===b.dataset.openStudy);const idx=state.previewIndex['study-'+s.id]||0;openViewer(s.images||[],s.title||'Estudo',s,idx,'study-'+s.id)});view.querySelectorAll('[data-prev-study-preview]').forEach(b=>b.onclick=e=>{e.stopPropagation();const s=state.studies.find(x=>x.id===b.dataset.prevStudyPreview);if(!s||!s.images||s.images.length<2)return;const k='study-'+s.id;state.previewIndex[k]=(((state.previewIndex[k]||0)-1)+s.images.length)%s.images.length;save(true);renderStudies()});view.querySelectorAll('[data-next-study-preview]').forEach(b=>b.onclick=e=>{e.stopPropagation();const s=state.studies.find(x=>x.id===b.dataset.nextStudyPreview);if(!s||!s.images||s.images.length<2)return;const k='study-'+s.id;state.previewIndex[k]=((state.previewIndex[k]||0)+1)%s.images.length;save(true);renderStudies()})}
+function renderThemes(){const view=$('#view-temas');view.innerHTML=`<div class="card"><div class="head"><div><div class="sectionTitle">Temas do projeto</div><div class="muted">Escolha o estilo visual do dashboard</div></div><span class="badge">${THEMES.length} temas</span></div><div class="grid3" style="margin-top:12px">${THEMES.map(t=>`<button class="themeCard" data-theme="${t}"><div class="box">${t}</div></button>`).join('')}</div></div>`;view.querySelectorAll('[data-theme]').forEach(b=>b.onclick=e=>{e.stopPropagation();document.body.dataset.theme=b.dataset.theme;save(true);toast('Tema aplicado: '+b.dataset.theme)})}
+function openDayModal(y,m,d){ensureAccountIds();fillOptions();state.modalDate={year:y,month:m,day:d};const key=keyFromYMD(y,m,d),entry=state.entries[key]||{},active=state.accounts.filter(a=>a.status==='Ativa');fillAccountOptions(entry.accountId||((!entry.accountId&&active.length===1)?active[0].id:''));state.dayImages=[...(entry.images||[])];state.dayMoods=[...(entry.emotions||[])];$('#dayModalTitle').textContent=`${d} de ${monthNames[m]} de ${y}`;$('#dayDate').value=key;$('#dayStatus').value=entry.status||'';$('#dayAsset').value=entry.asset||ASSETS[0];$('#dayDirection').value=entry.direction||DIRECTIONS[0];$('#daySetup').value=entry.setup||SETUPS[0];$('#dayTf').value=entry.timeframe||TIMEFRAMES[2];$('#dayPnl').value=entry.pnl!==undefined&&entry.pnl!==''?entry.pnl:'';$('#dayRR').value=entry.rr!==undefined&&entry.rr!==''?entry.rr:'';$('#dayBias').value=entry.bias||'';$('#dayNote').value=entry.note||'';$('#dayLesson').value=entry.lesson||'';$('#dayEmotionNote').value=entry.emotionNote||'';$('#customMood').value='';renderMoods();renderDayThumbs();refreshDayStats();$('#dayModalBack').classList.add('show')}
+function closeDayModal(){$('#dayModalBack').classList.remove('show');$('#dayImages').value=''}
+function renderMoods(){const moods=allMoods();$('#moodList').innerHTML=moods.map(m=>`<button type="button" class="mood ${state.dayMoods.includes(m)?'active':''}" data-mood="${m}">${moodEmoji(m)} ${m}</button>`).join('');$('#moodList').querySelectorAll('[data-mood]').forEach(b=>b.onclick=e=>{e.stopPropagation();const m=b.dataset.mood;state.dayMoods=state.dayMoods.includes(m)?state.dayMoods.filter(x=>x!==m):[...state.dayMoods,m];renderMoods()});$('#selectedMoods').innerHTML=state.dayMoods.length?state.dayMoods.map(m=>`<span class="chip">${moodEmoji(m)} ${m}</span>`).join(''):`<span class="muted">Nenhum comportamento selecionado.</span>`}
+function collectDayDraft(){return{type:'day',status:$('#dayStatus').value,asset:$('#dayAsset').value,direction:$('#dayDirection').value,setup:$('#daySetup').value,timeframe:$('#dayTf').value,accountId:$('#dayAccount').value,pnl:$('#dayPnl').value.trim(),rr:$('#dayRR').value.trim(),bias:$('#dayBias').value.trim(),note:$('#dayNote').value.trim(),lesson:$('#dayLesson').value.trim(),emotionNote:$('#dayEmotionNote').value.trim(),emotions:[...state.dayMoods],images:[...state.dayImages]}}
+function renderDayThumbs(){const box=$('#dayThumbs');if(!state.dayImages.length){box.className='empty';box.innerHTML='Nenhum print salvo para esse dia.';refreshDayStats();return}box.className='thumbs';box.innerHTML=state.dayImages.map((src,i)=>`<div class="thumb"><img src="${src}" alt="print"><div class="recordActions" style="margin-top:8px"><button class="btn tiny alt" data-open-img="${i}">Abrir</button><button class="btn tiny danger" data-del-img="${i}">Excluir</button></div></div>`).join('');box.querySelectorAll('[data-open-img]').forEach(b=>b.onclick=e=>{e.stopPropagation();const draft=collectDayDraft();openViewer(state.dayImages,$('#dayDate').value,draft,Number(b.dataset.openImg),$('#dayDate').value)});box.querySelectorAll('[data-del-img]').forEach(b=>b.onclick=e=>{e.stopPropagation();state.dayImages.splice(Number(b.dataset.delImg),1);renderDayThumbs()});refreshDayStats()}
+function refreshDayStats(){const draft=collectDayDraft();const val=$('#dayDate').value||keyFromDate(nowDate);const parts=val.split('-').map(Number);$('#statDay').textContent=String(parts[2]||'--').padStart(2,'0');$('#statStatus').textContent=statusLabels[draft.status||'neutral']||'Sem status';$('#statAsset').textContent=(draft.asset||'--').slice(0,6);$('#statImgs').textContent=String(state.dayImages.length)}
+function hasDayContent(e){return !!(e.status||e.asset||e.direction||e.setup||e.timeframe||e.accountId||e.bias||e.note||e.lesson||e.emotionNote||e.pnl||e.rr||(e.emotions&&e.emotions.length)||(e.images&&e.images.length))}
+function saveDay(){const oldKey=keyFromYMD(state.modalDate.year,state.modalDate.month,state.modalDate.day),newKey=$('#dayDate').value||oldKey,draft=collectDayDraft();if(oldKey!==newKey)delete state.entries[oldKey];if(!hasDayContent(draft))delete state.entries[newKey];else state.entries[newKey]=draft;save(true);const p=parseKey(newKey);state.calendar={year:p.year,month:p.month};state.analysisMonth={year:p.year,month:p.month};closeDayModal();render();toast('Registro diário salvo')}
+function deleteDay(){const key=$('#dayDate').value||keyFromYMD(state.modalDate.year,state.modalDate.month,state.modalDate.day);delete state.entries[key];save(true);closeDayModal();render();toast('Registro removido')}
+function addCustomMood(){const v=$('#customMood').value.trim();if(!v)return;if(!state.dayMoods.includes(v))state.dayMoods=[...state.dayMoods,v];if(!state.savedMoods.includes(v)&&!BASE_MOODS.includes(v)){state.savedMoods.push(v);save(true)}$('#customMood').value='';renderMoods();toast('Comportamento salvo para usar novamente')}
+function compressImage(file,maxWidth=1280,quality=.78){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const scale=Math.min(1,maxWidth/img.width);const canvas=document.createElement('canvas');canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',quality))};img.onerror=reject;img.src=reader.result};reader.onerror=reject;reader.readAsDataURL(file)})}
+function openAccountModal(index=null){ensureAccountIds();state.accountEdit=index;const item=index==null?{id:createId('acc'),name:'',category:'Conta',type:'',balance:'',phaseCount:1,status:'Ativa',progress:0,phase1Goal:'',phase2Goal:'',phase3Goal:'',riskPercent:'',riskValue:'',notes:''}:normalizeAccount(state.accounts[index]);$('#accountTitle').textContent=index==null?'Nova conta ou mesa':'Editar conta ou mesa';$('#accountName').value=item.name||'';$('#accountCategory').value=item.category||'Conta';$('#accountType').value=item.type||'';$('#accountBalance').value=item.balance||'';$('#accountPhaseCount').value=String(item.phaseCount||1);$('#accountStatus').value=item.status||'Ativa';$('#accountProgress').value=Number(item.progress)||0;$('#phase1Goal').value=item.phase1Goal||'';$('#phase2Goal').value=item.phase2Goal||'';$('#phase3Goal').value=item.phase3Goal||'';$('#riskPercent').value=item.riskPercent||'';$('#riskValue').value=item.riskValue||'';$('#accountNotes').value=item.notes||'';togglePhaseGoalFields();$('#deleteAccountBtn').style.display=index==null?'none':'inline-flex';$('#accountModalBack').classList.add('show')}
+function closeAccountModal(){$('#accountModalBack').classList.remove('show');state.accountEdit=null}
+function saveAccount(){const base=state.accountEdit==null?{id:createId('acc')}:{...state.accounts[state.accountEdit]};const draft={id:base.id,name:$('#accountName').value.trim()||'Nova conta',category:$('#accountCategory').value,type:$('#accountType').value.trim()||'Sem tipo',balance:$('#accountBalance').value.trim()||'0',phaseCount:Number($('#accountPhaseCount').value||1),status:$('#accountStatus').value,progress:Number($('#accountProgress').value)||0,phase1Goal:$('#phase1Goal').value.trim(),phase2Goal:$('#phase2Goal').value.trim(),phase3Goal:$('#phase3Goal').value.trim(),riskPercent:$('#riskPercent').value.trim(),riskValue:$('#riskValue').value.trim(),notes:$('#accountNotes').value.trim()};if(state.accountEdit==null)state.accounts.unshift(normalizeAccount(draft));else state.accounts[state.accountEdit]=normalizeAccount(draft);save(true);closeAccountModal();render();toast('Conta/mesa salva')}
+function deleteAccount(){if(state.accountEdit==null)return;state.accounts.splice(state.accountEdit,1);save(true);closeAccountModal();render();toast('Conta/mesa removida')}
+function openViewer(images,label,entry,start=0,key=''){state.viewer={images:images||[],index:Math.max(0,start||0),label,entry:entry||{},key:key||label};renderViewer();$('#viewerBack').classList.add('show')}
+function renderViewer(){const src=state.viewer.images[state.viewer.index]||'';$('#viewerTitle').textContent=state.viewer.label||'Print';$('#viewerImage').innerHTML=src?`<img src="${src}" alt="print"><div class="viewerHover"><div class="viewerTopNav">${state.viewer.images.length>1?`<button class="viewerNav" id="viewerPrev">‹</button><div class="viewerCounter">${state.viewer.index+1}/${state.viewer.images.length}</div><button class="viewerNav" id="viewerNext">›</button>`:`<div></div><div class="viewerCounter">1/1</div><div></div>`}</div><div class="actions" style="justify-content:center"><button class="btn primary tiny" id="openViewerImage">Abrir imagem</button></div></div>`:`<div class="empty">Sem imagem salva para este item.</div>`;const e=state.viewer.entry||{};$('#viewerInfo').innerHTML=e.type==='study'?`<div class="viewerCard"><div class="sectionTitle">Trade journal</div><div class="actions" style="justify-content:flex-start"><span class="chip highlightChip">${e.mentorship||'Sem mentoria'}</span><span class="chip">${e.operational||'Nenhum'}</span><span class="chip">${e.timeframe||'Sem timeframe'}</span></div></div><div class="viewerCard"><div class="sectionTitle">Resumo</div><div>${e.summary||'Sem resumo'}</div></div><div class="viewerCard"><div class="sectionTitle">Insight</div><div>${e.insight||'Sem insight'}</div></div>`:`<div class="viewerCard"><div class="sectionTitle">Resumo operacional</div><div class="actions" style="justify-content:flex-start"><span class="chip">${statusLabels[e.status||'neutral']}</span><span class="chip">${e.asset||'Sem ativo'}</span><span class="chip">${e.setup||'Sem setup'}</span><span class="chip">${e.timeframe||'Sem timeframe'}</span><span class="chip">${getAccountNameById(e.accountId)}</span><span class="chip">${entryPnlLabel(e)}</span>${Number.isFinite(num(e.rr))?`<span class="chip">${Number(e.rr).toFixed(2)}R</span>`:''}</div></div><div class="viewerCard"><div class="sectionTitle">Narrativa</div><div>${e.bias||'Sem narrativa'}</div></div><div class="viewerCard"><div class="sectionTitle">Execução</div><div>${e.note||'Sem anotação'}</div></div><div class="viewerCard"><div class="sectionTitle">Aprendizado</div><div>${e.lesson||'Sem aprendizado'}</div></div><div class="viewerCard"><div class="sectionTitle">Humor</div><div>${(e.emotions||[]).length?(e.emotions||[]).map(m=>`<span class='chip'>${moodEmoji(m)} ${m}</span>`).join(' '):'Sem humor marcado'}</div></div>`;if($('#viewerPrev'))$('#viewerPrev').onclick=e=>{e.stopPropagation();state.viewer.index=(state.viewer.index-1+state.viewer.images.length)%state.viewer.images.length;renderViewer()};if($('#viewerNext'))$('#viewerNext').onclick=e=>{e.stopPropagation();state.viewer.index=(state.viewer.index+1)%state.viewer.images.length;renderViewer()};if($('#openViewerImage'))$('#openViewerImage').onclick=e=>{e.stopPropagation();$('#imagePageImg').src=src;$('#imagePageBack').classList.add('show')};$('#editViewerRecord').onclick=e=>{e.stopPropagation();if(String(state.viewer.key).startsWith('study-')){const id=String(state.viewer.key).replace('study-','');const study=state.studies.find(s=>s.id===id);state.activeNav='Estudos';render();fillStudyForm(study);window.scrollTo({top:0,behavior:'smooth'});closeViewer();return}const p=parseKey(state.viewer.key);closeViewer();openDayModal(p.year,p.month,p.day)}}
+function closeViewer(){$('#viewerBack').classList.remove('show')}
+function render(){ensureAccountIds();document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));const map={'Dashboard':'view-dashboard','Performance':'view-performance','Simulador':'view-simulador','Contas':'view-contas','Backtesting':'view-backtesting','Minhas Análises':'view-analises','Estudos':'view-estudos','Temas':'view-temas'};renderNav();renderHero();renderDashboard();renderPerformance();renderSimulador();renderContas();renderBacktesting();renderAnalises();renderStudies();renderThemes();$('#'+map[state.activeNav]).classList.add('active')}
+function bind(){document.addEventListener('click',e=>{if(e.target.id==='dayModalBack')return closeDayModal();if(e.target.id==='accountModalBack')return closeAccountModal();if(e.target.id==='viewerBack')return closeViewer();if(e.target.id==='imagePageBack')return $('#imagePageBack').classList.remove('show')});document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#imagePageBack').classList.contains('show'))$('#imagePageBack').classList.remove('show');else if($('#viewerBack').classList.contains('show'))closeViewer();else if($('#accountModalBack').classList.contains('show'))closeAccountModal();else if($('#dayModalBack').classList.contains('show'))closeDayModal()}});$('#saveBtn').onclick=e=>{e.stopPropagation();save()};$('#newDayShortcut').onclick=e=>{e.stopPropagation();openDayModal(nowDate.getFullYear(),nowDate.getMonth(),nowDate.getDate())};$('#closeDayModal').onclick=e=>{e.stopPropagation();closeDayModal()};$('#saveDayBtn').onclick=e=>{e.stopPropagation();saveDay()};$('#deleteDayBtn').onclick=e=>{e.stopPropagation();deleteDay()};$('#addMoodBtn').onclick=e=>{e.stopPropagation();addCustomMood()};$('#customMood').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addCustomMood()}});$('#dayImages').addEventListener('change',async e=>{e.stopPropagation();const files=Array.from(e.target.files||[]);for(const file of files){if(state.dayImages.length>=10){toast('Limite de 10 imagens por dia');break}try{state.dayImages.push(await compressImage(file))}catch{toast('Não foi possível processar uma imagem')}}e.target.value='';renderDayThumbs()});['#dayStatus','#dayAsset','#dayDirection','#daySetup','#dayTf','#dayPnl','#dayRR','#dayAccount','#dayDate'].forEach(sel=>$(sel).addEventListener('change',refreshDayStats));$('#closeAccountModal').onclick=e=>{e.stopPropagation();closeAccountModal()};$('#saveAccountBtn').onclick=e=>{e.stopPropagation();saveAccount()};$('#deleteAccountBtn').onclick=e=>{e.stopPropagation();deleteAccount()};['#accountPhaseCount','#accountProgress','#phase1Goal','#phase2Goal','#phase3Goal','#accountStatus'].forEach(sel=>$(sel).addEventListener('input',updateAccountPhasePreview));$('#accountPhaseCount').addEventListener('change',togglePhaseGoalFields);$('#closeViewer').onclick=e=>{e.stopPropagation();closeViewer()};$('#closeImagePage').onclick=e=>{e.stopPropagation();$('#imagePageBack').classList.remove('show')}}
+load();fillOptions();ensureAccountIds();bind();render();
 </script>
 </body>
 </html>

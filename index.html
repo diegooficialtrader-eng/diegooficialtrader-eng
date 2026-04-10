@@ -1,797 +1,1622 @@
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import {
-  Activity,
-  BarChart3,
-  BookOpen,
-  Brain,
-  Briefcase,
-  Camera,
-  CalendarDays,
-  ChevronRight,
-  Clock3,
-  FlaskConical,
-  FolderKanban,
-  Gauge,
-  LayoutDashboard,
-  Moon,
-  NotebookPen,
-  Palette,
-  Plus,
-  ShieldCheck,
-  Sparkles,
-  Sun,
-  Target,
-  TrendingUp,
-  Wallet,
-} from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Trader Premium</title>
+  <style>
+    :root {
+      --radius-xl: 30px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+      --shadow-xl: 0 25px 60px rgba(15, 23, 42, 0.16);
+      --shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.12);
+      --shadow-sm: 0 8px 18px rgba(15, 23, 42, 0.08);
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-const summaryCards = [
-  { label: "Win rate", value: "68%", helper: "Últimos 30 dias", icon: TrendingUp },
-  { label: "Resultado mensal", value: "$4.280", helper: "Performance consolidada", icon: BarChart3 },
-  { label: "Trades revisados", value: "42", helper: "Checklist completo", icon: ShieldCheck },
-  { label: "Contas ativas", value: "3", helper: "Mesas e contas em uso", icon: Wallet },
-];
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      transition: background .25s ease, color .25s ease;
+    }
 
-const behaviors = [
-  "Paciência na abertura de NY",
-  "Respeito ao stop",
-  "Execução limpa após confirmação",
-  "Evitar overtrading em consolidação",
-];
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at top left, var(--bg-glow-1), transparent 36%),
+        radial-gradient(circle at top right, var(--bg-glow-2), transparent 30%);
+      opacity: .95;
+      z-index: -1;
+    }
 
-const accountRows = [
-  { name: "FTMO Swing", category: "Mesa", phase: "Fase 2", status: "Ativa", balance: "$100.000", progress: "64%" },
-  { name: "Conta Pessoal", category: "Conta", phase: "Livre", status: "Ativa", balance: "$12.500", progress: "—" },
-  { name: "Funding P1", category: "Mesa", phase: "Fase 1", status: "Observação", balance: "$50.000", progress: "38%" },
-];
+    .app {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px;
+    }
 
-const recentEntries = [
-  { date: "08 Abr", asset: "EURUSD", status: "Win", rr: "1:3", result: "+$320" },
-  { date: "07 Abr", asset: "GBPUSD", status: "Break-even", rr: "1:1", result: "$0" },
-  { date: "06 Abr", asset: "XAUUSD", status: "Loss", rr: "1:2", result: "-$180" },
-];
+    .topbar,
+    .sidebar,
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
 
-const backtestRows = [
-  { setup: "Sweep + confirmação", asset: "EURUSD", samples: 36, winRate: "69%", expectancy: "+0.54R", verdict: "Validado" },
-  { setup: "Retorno ao FVG", asset: "GBPUSD", samples: 22, winRate: "59%", expectancy: "+0.22R", verdict: "Em ajuste" },
-  { setup: "Reversal NY AM", asset: "XAUUSD", samples: 17, winRate: "47%", expectancy: "-0.08R", verdict: "Fraco" },
-];
+    .topbar {
+      padding: 18px;
+      margin-bottom: 24px;
+    }
 
-const themes = {
-  institutional: {
-    name: "Institutional",
-    badge: "Mesa proprietária",
-    light: {
-      shell: "bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95),_rgba(241,245,249,1),_rgba(226,232,240,1))] text-slate-900",
-      panel: "border-white/70 bg-white/75 text-slate-900 shadow-xl backdrop-blur",
-      softPanel: "border-slate-200 bg-slate-50/90 text-slate-900",
-      sidebarTop: "border-slate-900 bg-slate-950 text-white",
-      activeItem: "bg-slate-900 text-white shadow-lg",
-      inactiveItem: "text-slate-600 hover:bg-white hover:text-slate-900",
-      hero: "border-white/70 bg-slate-950 text-white shadow-2xl",
-      heroCard: "border border-white/10 bg-white/5",
-      outlineBtn: "border-slate-200 bg-white text-slate-900 hover:bg-slate-50",
-      subtle: "text-slate-500",
-      strongSubtle: "text-slate-300",
-      accentSolid: "bg-slate-900 text-white",
-      accentSoft: "bg-slate-100 text-slate-900",
-      input: "border-slate-200 bg-white",
-      dropzone: "border-slate-200 bg-slate-50",
-      pill: "border-slate-200 bg-white text-slate-700 hover:bg-slate-50",
-      pillActive: "border-slate-900 bg-slate-900 text-white",
-    },
-    dark: {
-      shell: "bg-[radial-gradient(circle_at_top,_rgba(30,41,59,0.85),_rgba(2,6,23,1),_rgba(15,23,42,1))] text-slate-100",
-      panel: "border-white/10 bg-slate-900/70 text-slate-100 shadow-2xl backdrop-blur",
-      softPanel: "border-white/10 bg-slate-800/70 text-slate-100",
-      sidebarTop: "border-white/10 bg-white/5 text-white",
-      activeItem: "bg-white text-slate-950 shadow-lg",
-      inactiveItem: "text-slate-300 hover:bg-white/5 hover:text-white",
-      hero: "border-white/10 bg-slate-950 text-white shadow-2xl",
-      heroCard: "border border-white/10 bg-white/5",
-      outlineBtn: "border-white/10 bg-white/5 text-white hover:bg-white/10",
-      subtle: "text-slate-400",
-      strongSubtle: "text-slate-300",
-      accentSolid: "bg-white text-slate-950",
-      accentSoft: "bg-white/10 text-white",
-      input: "border-white/10 bg-slate-950/70 text-white",
-      dropzone: "border-white/10 bg-slate-950/70",
-      pill: "border-white/10 bg-slate-950/70 text-slate-200 hover:bg-slate-800",
-      pillActive: "border-white bg-white text-slate-950",
-    },
-  },
-  aurora: {
-    name: "Aurora",
-    badge: "Premium vibrante",
-    light: {
-      shell: "bg-[radial-gradient(circle_at_top_left,_rgba(236,253,245,1),_rgba(239,246,255,1),_rgba(245,243,255,1))] text-slate-900",
-      panel: "border-white/80 bg-white/70 text-slate-900 shadow-xl backdrop-blur",
-      softPanel: "border-emerald-100 bg-emerald-50/80 text-slate-900",
-      sidebarTop: "border-emerald-500/30 bg-gradient-to-r from-emerald-500 to-sky-500 text-white",
-      activeItem: "bg-gradient-to-r from-emerald-500 to-sky-500 text-white shadow-lg",
-      inactiveItem: "text-slate-600 hover:bg-white hover:text-slate-900",
-      hero: "border-white/80 bg-gradient-to-br from-slate-950 via-emerald-950 to-sky-950 text-white shadow-2xl",
-      heroCard: "border border-white/10 bg-white/10",
-      outlineBtn: "border-emerald-100 bg-white text-slate-900 hover:bg-emerald-50",
-      subtle: "text-slate-500",
-      strongSubtle: "text-emerald-100",
-      accentSolid: "bg-gradient-to-r from-emerald-500 to-sky-500 text-white",
-      accentSoft: "bg-emerald-100 text-emerald-900",
-      input: "border-emerald-100 bg-white",
-      dropzone: "border-emerald-100 bg-emerald-50/60",
-      pill: "border-emerald-100 bg-white text-slate-700 hover:bg-emerald-50",
-      pillActive: "border-emerald-500 bg-emerald-500 text-white",
-    },
-    dark: {
-      shell: "bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.15),_rgba(2,6,23,1),_rgba(12,74,110,0.65))] text-slate-100",
-      panel: "border-white/10 bg-slate-900/75 text-slate-100 shadow-2xl backdrop-blur",
-      softPanel: "border-emerald-500/20 bg-emerald-500/10 text-slate-100",
-      sidebarTop: "border-emerald-500/20 bg-gradient-to-r from-emerald-500/80 to-sky-500/80 text-white",
-      activeItem: "bg-gradient-to-r from-emerald-500 to-sky-500 text-white shadow-lg",
-      inactiveItem: "text-slate-300 hover:bg-white/5 hover:text-white",
-      hero: "border-white/10 bg-gradient-to-br from-slate-950 via-emerald-950 to-sky-950 text-white shadow-2xl",
-      heroCard: "border border-white/10 bg-white/10",
-      outlineBtn: "border-white/10 bg-white/5 text-white hover:bg-white/10",
-      subtle: "text-slate-400",
-      strongSubtle: "text-emerald-100",
-      accentSolid: "bg-gradient-to-r from-emerald-500 to-sky-500 text-white",
-      accentSoft: "bg-emerald-500/15 text-emerald-100",
-      input: "border-white/10 bg-slate-950/70 text-white",
-      dropzone: "border-white/10 bg-slate-950/60",
-      pill: "border-white/10 bg-slate-950/70 text-slate-200 hover:bg-slate-800",
-      pillActive: "border-emerald-500 bg-emerald-500 text-white",
-    },
-  },
-  graphite: {
-    name: "Graphite",
-    badge: "Luxo minimalista",
-    light: {
-      shell: "bg-[radial-gradient(circle_at_top,_rgba(255,255,255,1),_rgba(245,245,245,1),_rgba(229,229,229,1))] text-zinc-950",
-      panel: "border-white/80 bg-white/80 text-zinc-950 shadow-xl backdrop-blur",
-      softPanel: "border-zinc-200 bg-zinc-50/90 text-zinc-950",
-      sidebarTop: "border-zinc-800 bg-zinc-900 text-white",
-      activeItem: "bg-zinc-900 text-white shadow-lg",
-      inactiveItem: "text-zinc-600 hover:bg-white hover:text-zinc-950",
-      hero: "border-white/80 bg-zinc-950 text-white shadow-2xl",
-      heroCard: "border border-white/10 bg-white/5",
-      outlineBtn: "border-zinc-200 bg-white text-zinc-950 hover:bg-zinc-50",
-      subtle: "text-zinc-500",
-      strongSubtle: "text-zinc-300",
-      accentSolid: "bg-zinc-900 text-white",
-      accentSoft: "bg-zinc-100 text-zinc-900",
-      input: "border-zinc-200 bg-white",
-      dropzone: "border-zinc-200 bg-zinc-50",
-      pill: "border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50",
-      pillActive: "border-zinc-900 bg-zinc-900 text-white",
-    },
-    dark: {
-      shell: "bg-[radial-gradient(circle_at_top,_rgba(82,82,91,0.2),_rgba(9,9,11,1),_rgba(24,24,27,1))] text-zinc-100",
-      panel: "border-white/10 bg-zinc-900/75 text-zinc-100 shadow-2xl backdrop-blur",
-      softPanel: "border-white/10 bg-zinc-800/75 text-zinc-100",
-      sidebarTop: "border-white/10 bg-white/5 text-white",
-      activeItem: "bg-white text-zinc-950 shadow-lg",
-      inactiveItem: "text-zinc-300 hover:bg-white/5 hover:text-white",
-      hero: "border-white/10 bg-zinc-950 text-white shadow-2xl",
-      heroCard: "border border-white/10 bg-white/5",
-      outlineBtn: "border-white/10 bg-white/5 text-white hover:bg-white/10",
-      subtle: "text-zinc-400",
-      strongSubtle: "text-zinc-300",
-      accentSolid: "bg-white text-zinc-950",
-      accentSoft: "bg-white/10 text-white",
-      input: "border-white/10 bg-zinc-950/70 text-white",
-      dropzone: "border-white/10 bg-zinc-950/70",
-      pill: "border-white/10 bg-zinc-950/70 text-zinc-200 hover:bg-zinc-800",
-      pillActive: "border-white bg-white text-zinc-950",
-    },
-  },
-};
+    .topbar-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
 
-function cn(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+    .topbar h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(1.75rem, 3vw, 2.35rem);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
 
-function SectionHeader({ icon: Icon, title, description, tokens }) {
-  return (
-    <div className="flex items-start justify-between gap-4">
-      <div className="flex items-start gap-3">
-        <div className={cn("rounded-2xl border p-2 shadow-sm", tokens.softPanel)}>
-          <Icon className="h-5 w-5" />
-        </div>
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .badges,
+    .toolbar,
+    .theme-pills,
+    .chip-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .badge,
+    .mini-badge,
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--soft);
+      color: var(--text);
+    }
+
+    .badge-accent {
+      background: var(--accent-soft);
+      color: var(--accent-soft-text);
+      border-color: transparent;
+    }
+
+    .toolbar {
+      justify-content: flex-end;
+      min-width: min(100%, 460px);
+    }
+
+    .theme-pills,
+    .toggle-shell {
+      padding: 8px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .theme-btn,
+    .toggle-btn,
+    .pill-btn,
+    .side-item,
+    .btn {
+      border: 0;
+      cursor: pointer;
+      font: inherit;
+      transition: transform .16s ease, background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+
+    .theme-btn,
+    .toggle-btn,
+    .pill-btn {
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid transparent;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .theme-btn:hover,
+    .toggle-btn:hover,
+    .pill-btn:hover,
+    .side-item:hover,
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .theme-btn.active,
+    .pill-btn.active,
+    .toggle-btn.active {
+      background: var(--accent);
+      color: var(--accent-text);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      padding: 18px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 20px;
+      background: var(--brand-bg);
+      color: var(--brand-text);
+      border: 1px solid var(--brand-border);
+    }
+
+    .brand-mark,
+    .icon-bubble {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.1);
+      font-size: 18px;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .brand small {
+      display: block;
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      opacity: .78;
+      margin-bottom: 4px;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      display: block;
+    }
+
+    .side-nav {
+      display: grid;
+      gap: 10px;
+    }
+
+    .side-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: transparent;
+      color: var(--muted-strong);
+      border: 1px solid transparent;
+      text-align: left;
+      width: 100%;
+    }
+
+    .side-item.active {
+      background: var(--accent);
+      color: var(--accent-text);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .summary-box {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+
+    .summary-box h3 {
+      margin: 0 0 14px;
+      font-size: 14px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    main {
+      display: grid;
+      gap: 24px;
+    }
+
+    .hero {
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      background: var(--hero);
+      color: var(--hero-text);
+      border: 1px solid var(--hero-line);
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(255,255,255,.18), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .9fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .hero h2 {
+      margin: 12px 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.06;
+      letter-spacing: -0.045em;
+      max-width: 760px;
+    }
+
+    .hero p {
+      color: var(--hero-muted);
+      max-width: 760px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn {
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: var(--hero-btn);
+      color: var(--hero-btn-text);
+    }
+
+    .btn-secondary {
+      background: var(--hero-btn-alt-bg);
+      color: var(--hero-btn-alt-text);
+      border-color: var(--hero-btn-alt-border);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: var(--hero-card);
+      border: 1px solid var(--hero-card-border);
+      border-radius: 24px;
+      padding: 18px;
+      min-height: 145px;
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      color: rgba(255,255,255,.86);
+      font-size: 14px;
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.1);
+    }
+
+    .stat-value {
+      margin-top: 30px;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .stat-helper {
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+    }
+
+    .cols-2,
+    .cols-hero,
+    .grid-two,
+    .grid-split,
+    .grid-three {
+      display: grid;
+      gap: 24px;
+    }
+
+    .cols-hero { grid-template-columns: 1.25fr .75fr; }
+    .grid-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-split { grid-template-columns: .95fr 1.05fr; }
+    .grid-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      padding: 22px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 22px;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .section-title-wrap h3 {
+      margin: 0;
+      font-size: 1.15rem;
+      letter-spacing: -0.03em;
+    }
+
+    .section-title-wrap p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .icon-soft {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      flex: 0 0 auto;
+    }
+
+    .outline-btn {
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: var(--soft);
+      color: var(--text);
+      border: 1px solid var(--line);
+      font-weight: 600;
+    }
+
+    .field-grid-4,
+    .field-grid-5,
+    .metric-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .field-grid-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .metric-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .control,
+    .textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--input-line);
+      background: var(--input-bg);
+      color: var(--text);
+      padding: 14px 15px;
+      font: inherit;
+      outline: none;
+      transition: border-color .15s ease, box-shadow .15s ease, background .2s ease;
+    }
+
+    .control:focus,
+    .textarea:focus {
+      border-color: var(--accent-focus);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .textarea {
+      min-height: 124px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .list-stack,
+    .account-stack,
+    .backtest-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .list-item,
+    .account-item,
+    .backtest-item,
+    .soft-block,
+    .metric-card {
+      border-radius: 22px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+    }
+
+    .list-item p,
+    .account-item p,
+    .backtest-item p { margin: 0; }
+
+    .list-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .result-badge {
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      border: 1px solid var(--line);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .focus-box {
+      border-radius: 24px;
+      padding: 22px;
+      background: var(--focus-bg);
+      color: var(--focus-text);
+      border: 1px solid var(--focus-line);
+    }
+
+    .focus-box p {
+      margin: 0;
+      line-height: 1.7;
+      color: var(--focus-muted);
+    }
+
+    .metric-card {
+      padding: 16px;
+    }
+
+    .metric-card .label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .metric-card .value {
+      margin-top: 10px;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .behavior-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .dropzone {
+      min-height: 300px;
+      border-style: dashed;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 28px;
+      border-radius: 28px;
+      background: var(--dropzone);
+      border: 1px dashed var(--line);
+    }
+
+    .dropzone p {
+      max-width: 540px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 8px 0 0;
+    }
+
+    .drop-icon {
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      background: var(--drop-icon-bg);
+      box-shadow: var(--shadow-sm);
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .account-item,
+    .backtest-item {
+      padding: 18px;
+    }
+
+    .account-top,
+    .backtest-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .row-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .account-meta,
+    .backtest-meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .account-metrics,
+    .backtest-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      min-width: 220px;
+    }
+
+    .account-mini,
+    .backtest-mini {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: var(--mini-bg);
+      border: 1px solid var(--mini-line);
+    }
+
+    .account-mini .label,
+    .backtest-mini .label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .account-mini .value,
+    .backtest-mini .value {
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
+    .phase-note {
+      display: grid;
+      gap: 16px;
+    }
+
+    .phase-card {
+      padding: 20px;
+      border-radius: 24px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+    }
+
+    .phase-card h4 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .phase-card p {
+      margin: 0;
+      line-height: 1.7;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 1180px) {
+      .layout,
+      .hero-grid,
+      .cols-hero,
+      .grid-two,
+      .grid-split,
+      .grid-three {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .field-grid-4,
+      .field-grid-5,
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .app { padding: 16px; }
+      .topbar, .sidebar, .card, .hero { padding: 18px; }
+      .field-grid-4,
+      .field-grid-5,
+      .metric-grid,
+      .account-metrics,
+      .backtest-metrics,
+      .stats-grid,
+      .grid-three {
+        grid-template-columns: 1fr;
+      }
+      .section-head,
+      .topbar-row,
+      .account-top,
+      .backtest-top {
+        flex-direction: column;
+      }
+      .toolbar {
+        justify-content: flex-start;
+      }
+      .theme-pills {
+        width: 100%;
+      }
+      .theme-btn {
+        flex: 1 1 calc(50% - 10px);
+        text-align: center;
+      }
+      .btn, .outline-btn, .toggle-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Institutional */
+    body.theme-institutional.mode-light {
+      --bg: linear-gradient(180deg, #ffffff 0%, #f1f5f9 50%, #e2e8f0 100%);
+      --bg-glow-1: rgba(255,255,255,.95);
+      --bg-glow-2: rgba(203,213,225,.55);
+      --card: rgba(255,255,255,.76);
+      --soft: rgba(248,250,252,.9);
+      --text: #0f172a;
+      --muted: #64748b;
+      --muted-strong: #475569;
+      --line: rgba(226,232,240,.95);
+      --brand-bg: #020617;
+      --brand-text: #ffffff;
+      --brand-border: rgba(15,23,42,.7);
+      --accent: #0f172a;
+      --accent-text: #ffffff;
+      --accent-soft: #e2e8f0;
+      --accent-soft-text: #0f172a;
+      --accent-focus: #334155;
+      --focus-ring: rgba(51,65,85,.16);
+      --hero: linear-gradient(135deg, #020617 0%, #111827 55%, #0f172a 100%);
+      --hero-text: #ffffff;
+      --hero-muted: rgba(226,232,240,.9);
+      --hero-line: rgba(255,255,255,.08);
+      --hero-card: rgba(255,255,255,.06);
+      --hero-card-border: rgba(255,255,255,.1);
+      --hero-btn: #ffffff;
+      --hero-btn-text: #0f172a;
+      --hero-btn-alt-bg: rgba(255,255,255,.06);
+      --hero-btn-alt-text: #ffffff;
+      --hero-btn-alt-border: rgba(255,255,255,.14);
+      --input-bg: #ffffff;
+      --input-line: #cbd5e1;
+      --badge-bg: #ffffff;
+      --badge-text: #0f172a;
+      --focus-bg: #020617;
+      --focus-text: #ffffff;
+      --focus-muted: rgba(226,232,240,.86);
+      --focus-line: rgba(15,23,42,.8);
+      --dropzone: rgba(248,250,252,.96);
+      --drop-icon-bg: #ffffff;
+      --mini-bg: #ffffff;
+      --mini-line: #e2e8f0;
+    }
+
+    body.theme-institutional.mode-dark {
+      --bg: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      --bg-glow-1: rgba(30,41,59,.8);
+      --bg-glow-2: rgba(15,23,42,.85);
+      --card: rgba(15,23,42,.74);
+      --soft: rgba(30,41,59,.72);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --muted-strong: #cbd5e1;
+      --line: rgba(255,255,255,.08);
+      --brand-bg: rgba(255,255,255,.04);
+      --brand-text: #ffffff;
+      --brand-border: rgba(255,255,255,.08);
+      --accent: #ffffff;
+      --accent-text: #020617;
+      --accent-soft: rgba(255,255,255,.1);
+      --accent-soft-text: #ffffff;
+      --accent-focus: #ffffff;
+      --focus-ring: rgba(255,255,255,.12);
+      --hero: linear-gradient(135deg, #020617 0%, #0f172a 55%, #111827 100%);
+      --hero-text: #ffffff;
+      --hero-muted: rgba(226,232,240,.9);
+      --hero-line: rgba(255,255,255,.08);
+      --hero-card: rgba(255,255,255,.06);
+      --hero-card-border: rgba(255,255,255,.1);
+      --hero-btn: #ffffff;
+      --hero-btn-text: #020617;
+      --hero-btn-alt-bg: rgba(255,255,255,.06);
+      --hero-btn-alt-text: #ffffff;
+      --hero-btn-alt-border: rgba(255,255,255,.14);
+      --input-bg: rgba(2,6,23,.72);
+      --input-line: rgba(255,255,255,.1);
+      --badge-bg: rgba(255,255,255,.08);
+      --badge-text: #ffffff;
+      --focus-bg: #020617;
+      --focus-text: #ffffff;
+      --focus-muted: rgba(226,232,240,.86);
+      --focus-line: rgba(255,255,255,.08);
+      --dropzone: rgba(2,6,23,.58);
+      --drop-icon-bg: rgba(255,255,255,.06);
+      --mini-bg: rgba(0,0,0,.18);
+      --mini-line: rgba(255,255,255,.08);
+    }
+
+    /* Aurora */
+    body.theme-aurora.mode-light {
+      --bg: linear-gradient(180deg, #ecfdf5 0%, #eff6ff 55%, #f5f3ff 100%);
+      --bg-glow-1: rgba(16,185,129,.22);
+      --bg-glow-2: rgba(14,165,233,.18);
+      --card: rgba(255,255,255,.72);
+      --soft: rgba(236,253,245,.78);
+      --text: #0f172a;
+      --muted: #64748b;
+      --muted-strong: #334155;
+      --line: rgba(209,250,229,.95);
+      --brand-bg: linear-gradient(90deg, #10b981 0%, #0ea5e9 100%);
+      --brand-text: #ffffff;
+      --brand-border: rgba(16,185,129,.22);
+      --accent: linear-gradient(90deg, #10b981 0%, #0ea5e9 100%);
+      --accent-text: #ffffff;
+      --accent-soft: #d1fae5;
+      --accent-soft-text: #065f46;
+      --accent-focus: #10b981;
+      --focus-ring: rgba(16,185,129,.18);
+      --hero: linear-gradient(135deg, #020617 0%, #064e3b 55%, #082f49 100%);
+      --hero-text: #ffffff;
+      --hero-muted: rgba(209,250,229,.92);
+      --hero-line: rgba(255,255,255,.08);
+      --hero-card: rgba(255,255,255,.1);
+      --hero-card-border: rgba(255,255,255,.12);
+      --hero-btn: linear-gradient(90deg, #10b981 0%, #0ea5e9 100%);
+      --hero-btn-text: #ffffff;
+      --hero-btn-alt-bg: rgba(255,255,255,.08);
+      --hero-btn-alt-text: #ffffff;
+      --hero-btn-alt-border: rgba(255,255,255,.14);
+      --input-bg: #ffffff;
+      --input-line: #a7f3d0;
+      --badge-bg: #ffffff;
+      --badge-text: #065f46;
+      --focus-bg: linear-gradient(135deg, #022c22 0%, #052e4f 100%);
+      --focus-text: #ffffff;
+      --focus-muted: rgba(209,250,229,.88);
+      --focus-line: rgba(16,185,129,.18);
+      --dropzone: rgba(236,253,245,.76);
+      --drop-icon-bg: #ffffff;
+      --mini-bg: #ffffff;
+      --mini-line: rgba(209,250,229,.95);
+    }
+
+    body.theme-aurora.mode-dark {
+      --bg: linear-gradient(180deg, #020617 0%, #0b1324 55%, #082f49 100%);
+      --bg-glow-1: rgba(16,185,129,.16);
+      --bg-glow-2: rgba(14,165,233,.16);
+      --card: rgba(15,23,42,.76);
+      --soft: rgba(16,185,129,.1);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --muted-strong: #cbd5e1;
+      --line: rgba(255,255,255,.08);
+      --brand-bg: linear-gradient(90deg, rgba(16,185,129,.84) 0%, rgba(14,165,233,.84) 100%);
+      --brand-text: #ffffff;
+      --brand-border: rgba(16,185,129,.2);
+      --accent: linear-gradient(90deg, #10b981 0%, #0ea5e9 100%);
+      --accent-text: #ffffff;
+      --accent-soft: rgba(16,185,129,.14);
+      --accent-soft-text: #d1fae5;
+      --accent-focus: #10b981;
+      --focus-ring: rgba(16,185,129,.18);
+      --hero: linear-gradient(135deg, #020617 0%, #064e3b 55%, #082f49 100%);
+      --hero-text: #ffffff;
+      --hero-muted: rgba(209,250,229,.92);
+      --hero-line: rgba(255,255,255,.08);
+      --hero-card: rgba(255,255,255,.1);
+      --hero-card-border: rgba(255,255,255,.12);
+      --hero-btn: linear-gradient(90deg, #10b981 0%, #0ea5e9 100%);
+      --hero-btn-text: #ffffff;
+      --hero-btn-alt-bg: rgba(255,255,255,.08);
+      --hero-btn-alt-text: #ffffff;
+      --hero-btn-alt-border: rgba(255,255,255,.14);
+      --input-bg: rgba(2,6,23,.7);
+      --input-line: rgba(255,255,255,.1);
+      --badge-bg: rgba(255,255,255,.08);
+      --badge-text: #d1fae5;
+      --focus-bg: linear-gradient(135deg, #022c22 0%, #052e4f 100%);
+      --focus-text: #ffffff;
+      --focus-muted: rgba(209,250,229,.88);
+      --focus-line: rgba(255,255,255,.08);
+      --dropzone: rgba(2,6,23,.56);
+      --drop-icon-bg: rgba(255,255,255,.06);
+      --mini-bg: rgba(0,0,0,.18);
+      --mini-line: rgba(255,255,255,.08);
+    }
+
+    /* Graphite */
+    body.theme-graphite.mode-light {
+      --bg: linear-gradient(180deg, #ffffff 0%, #f5f5f5 55%, #e5e5e5 100%);
+      --bg-glow-1: rgba(255,255,255,.95);
+      --bg-glow-2: rgba(161,161,170,.24);
+      --card: rgba(255,255,255,.82);
+      --soft: rgba(250,250,250,.9);
+      --text: #09090b;
+      --muted: #71717a;
+      --muted-strong: #3f3f46;
+      --line: rgba(228,228,231,.94);
+      --brand-bg: #09090b;
+      --brand-text: #ffffff;
+      --brand-border: rgba(39,39,42,.8);
+      --accent: #09090b;
+      --accent-text: #ffffff;
+      --accent-soft: #f4f4f5;
+      --accent-soft-text: #18181b;
+      --accent-focus: #18181b;
+      --focus-ring: rgba(24,24,27,.12);
+      --hero: linear-gradient(135deg, #09090b 0%, #18181b 100%);
+      --hero-text: #ffffff;
+      --hero-muted: rgba(228,228,231,.84);
+      --hero-line: rgba(255,255,255,.08);
+      --hero-card: rgba(255,255,255,.06);
+      --hero-card-border: rgba(255,255,255,.1);
+      --hero-btn: #ffffff;
+      --hero-btn-text: #09090b;
+      --hero-btn-alt-bg: rgba(255,255,255,.06);
+      --hero-btn-alt-text: #ffffff;
+      --hero-btn-alt-border: rgba(255,255,255,.14);
+      --input-bg: #ffffff;
+      --input-line: #d4d4d8;
+      --badge-bg: #ffffff;
+      --badge-text: #18181b;
+      --focus-bg: #09090b;
+      --focus-text: #ffffff;
+      --focus-muted: rgba(228,228,231,.84);
+      --focus-line: rgba(39,39,42,.75);
+      --dropzone: rgba(250,250,250,.95);
+      --drop-icon-bg: #ffffff;
+      --mini-bg: #ffffff;
+      --mini-line: rgba(228,228,231,.94);
+    }
+
+    body.theme-graphite.mode-dark {
+      --bg: linear-gradient(180deg, #09090b 0%, #18181b 100%);
+      --bg-glow-1: rgba(113,113,122,.18);
+      --bg-glow-2: rgba(39,39,42,.26);
+      --card: rgba(24,24,27,.78);
+      --soft: rgba(39,39,42,.72);
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --muted-strong: #d4d4d8;
+      --line: rgba(255,255,255,.08);
+      --brand-bg: rgba(255,255,255,.04);
+      --brand-text: #ffffff;
+      --brand-border: rgba(255,255,255,.08);
+      --accent: #ffffff;
+      --accent-text: #09090b;
+      --accent-soft: rgba(255,255,255,.08);
+      --accent-soft-text: #ffffff;
+      --accent-focus: #ffffff;
+      --focus-ring: rgba(255,255,255,.12);
+      --hero: linear-gradient(135deg, #09090b 0%, #18181b 100%);
+      --hero-text: #ffffff;
+      --hero-muted: rgba(228,228,231,.84);
+      --hero-line: rgba(255,255,255,.08);
+      --hero-card: rgba(255,255,255,.06);
+      --hero-card-border: rgba(255,255,255,.1);
+      --hero-btn: #ffffff;
+      --hero-btn-text: #09090b;
+      --hero-btn-alt-bg: rgba(255,255,255,.06);
+      --hero-btn-alt-text: #ffffff;
+      --hero-btn-alt-border: rgba(255,255,255,.14);
+      --input-bg: rgba(9,9,11,.74);
+      --input-line: rgba(255,255,255,.1);
+      --badge-bg: rgba(255,255,255,.08);
+      --badge-text: #ffffff;
+      --focus-bg: #09090b;
+      --focus-text: #ffffff;
+      --focus-muted: rgba(228,228,231,.84);
+      --focus-line: rgba(255,255,255,.08);
+      --dropzone: rgba(9,9,11,.62);
+      --drop-icon-bg: rgba(255,255,255,.06);
+      --mini-bg: rgba(0,0,0,.2);
+      --mini-line: rgba(255,255,255,.08);
+    }
+  </style>
+</head>
+<body class="theme-institutional mode-light">
+  <div class="app">
+    <section class="topbar">
+      <div class="topbar-row">
         <div>
-          <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
-          <p className={cn("text-sm", tokens.subtle)}>{description}</p>
+          <div class="badges">
+            <span class="badge">Preview interativo</span>
+            <span class="badge badge-accent" id="themeBadge">Mesa proprietária</span>
+          </div>
+          <h1>Visualização premium com Backtesting Lab + 3 temas + modo claro/escuro</h1>
+          <p class="muted">Aqui você já consegue validar direção visual, estrutura do dashboard e posição do módulo de backtesting antes da versão final em HTML.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="theme-pills" id="themePills">
+            <button class="theme-btn active" data-theme="institutional">Institutional</button>
+            <button class="theme-btn" data-theme="aurora">Aurora</button>
+            <button class="theme-btn" data-theme="graphite">Graphite</button>
+          </div>
+
+          <div class="toggle-shell">
+            <button class="toggle-btn" id="modeToggle">🌙 Modo escuro</button>
+          </div>
         </div>
       </div>
-      <Button variant="outline" className={cn("rounded-xl", tokens.outlineBtn)}>
-        Ver detalhes
-      </Button>
-    </div>
-  );
-}
+    </section>
 
-function SidebarItem({ icon: Icon, label, active = false, tokens }) {
-  return (
-    <button
-      className={cn(
-        "flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left transition",
-        active ? tokens.activeItem : tokens.inactiveItem,
-      )}
-    >
-      <span className="flex items-center gap-3 text-sm font-medium">
-        <Icon className="h-4 w-4" />
-        {label}
-      </span>
-      <ChevronRight className="h-4 w-4 opacity-70" />
-    </button>
-  );
-}
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">◫</div>
+          <div>
+            <small id="brandSmall">Institutional</small>
+            <strong>Trading Dashboard</strong>
+          </div>
+        </div>
 
-export default function DashboardTraderPremiumPreview() {
-  const [selectedBehavior, setSelectedBehavior] = useState(behaviors[0]);
-  const [themeKey, setThemeKey] = useState("institutional");
-  const [darkMode, setDarkMode] = useState(false);
+        <nav class="side-nav">
+          <button class="side-item active"><span>◧ Visão geral</span><span>›</span></button>
+          <button class="side-item"><span>✎ Trader Journal</span><span>›</span></button>
+          <button class="side-item"><span>⚗ Backtesting Lab</span><span>›</span></button>
+          <button class="side-item"><span>◎ Psicologia</span><span>›</span></button>
+          <button class="side-item"><span>☰ Revisão & lições</span><span>›</span></button>
+          <button class="side-item"><span>▣ Prints do registro</span><span>›</span></button>
+          <button class="side-item"><span>◬ Contas & mesas</span><span>›</span></button>
+        </nav>
 
-  const journalDate = useMemo(() => new Date().toLocaleDateString("pt-BR"), []);
-  const activeTheme = themes[themeKey];
-  const tokens = darkMode ? activeTheme.dark : activeTheme.light;
+        <div class="summary-box">
+          <h3>Resumo operacional</h3>
+          <div class="summary-line"><span>Sessão principal</span><strong>Londres / NY</strong></div>
+          <div class="summary-line"><span>Setup dominante</span><strong>Liquidez + confirmação</strong></div>
+          <div class="summary-line"><span>Risco padrão</span><strong>0,5%</strong></div>
+          <div class="summary-line"><span>Modo visual</span><strong id="modeLabel">Light</strong></div>
+        </div>
+      </aside>
 
-  return (
-    <div className={cn("min-h-screen transition-colors duration-300", tokens.shell)}>
-      <div className="mx-auto max-w-7xl px-4 py-6 lg:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={cn("mb-6 rounded-[28px] border p-4", tokens.panel)}
-        >
-          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <main>
+        <section class="hero">
+          <div class="hero-grid">
             <div>
-              <div className="mb-2 flex items-center gap-2">
-                <Badge className="rounded-full">Preview interativo</Badge>
-                <Badge className={cn("rounded-full", tokens.accentSoft)}>{activeTheme.badge}</Badge>
+              <span class="badge" style="background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.12);">Preview premium</span>
+              <h2>Seu workspace de trading com journal, revisão e laboratório de backtesting.</h2>
+              <p>Estruturado para registrar operação, validar setups, revisar comportamento e acompanhar contas em uma experiência mais limpa, premium e escalável.</p>
+              <div class="button-row">
+                <button class="btn btn-primary">＋ Novo registro</button>
+                <button class="btn btn-secondary">Ver performance</button>
               </div>
-              <h1 className="text-2xl font-semibold tracking-tight lg:text-3xl">
-                Visualização premium com Backtesting Lab + 3 temas + modo claro/escuro
-              </h1>
-              <p className={cn("mt-2 max-w-3xl text-sm leading-6", tokens.subtle)}>
-                Aqui você já consegue validar direção visual, estrutura do dashboard e posição do módulo de backtesting antes da versão final em HTML.
-              </p>
             </div>
 
-            <div className="flex flex-col gap-3 md:flex-row md:items-center">
-              <div className={cn("flex items-center gap-2 rounded-2xl border p-2", tokens.softPanel)}>
-                <Palette className="h-4 w-4" />
-                {Object.entries(themes).map(([key, theme]) => (
-                  <button
-                    key={key}
-                    onClick={() => setThemeKey(key)}
-                    className={cn(
-                      "rounded-xl px-3 py-2 text-sm font-medium transition",
-                      themeKey === key ? tokens.accentSolid : tokens.pill,
-                    )}
-                  >
-                    {theme.name}
-                  </button>
-                ))}
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-top"><span>Win rate</span><span class="stat-icon">↗</span></div>
+                <div class="stat-value">68%</div>
+                <div class="stat-helper">Últimos 30 dias</div>
               </div>
-
-              <Button
-                onClick={() => setDarkMode((v) => !v)}
-                className={cn("rounded-2xl", darkMode ? tokens.accentSoft : tokens.accentSolid)}
-              >
-                {darkMode ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
-                {darkMode ? "Modo claro" : "Modo escuro"}
-              </Button>
+              <div class="stat-card">
+                <div class="stat-top"><span>Resultado mensal</span><span class="stat-icon">▦</span></div>
+                <div class="stat-value">$4.280</div>
+                <div class="stat-helper">Performance consolidada</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-top"><span>Trades revisados</span><span class="stat-icon">✓</span></div>
+                <div class="stat-value">42</div>
+                <div class="stat-helper">Checklist completo</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-top"><span>Contas ativas</span><span class="stat-icon">◔</span></div>
+                <div class="stat-value">3</div>
+                <div class="stat-helper">Mesas e contas em uso</div>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </section>
 
-        <div className="grid min-h-screen grid-cols-1 gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <motion.aside
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className={cn("rounded-[28px] border p-4", tokens.panel)}
-          >
-            <div className={cn("mb-6 flex items-center gap-3 rounded-2xl border px-4 py-4", tokens.sidebarTop)}>
-              <div className="rounded-2xl bg-white/10 p-2">
-                <LayoutDashboard className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.24em] opacity-80">{activeTheme.name}</p>
-                <h1 className="text-sm font-semibold">Trading Dashboard</h1>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <SidebarItem icon={LayoutDashboard} label="Visão geral" active tokens={tokens} />
-              <SidebarItem icon={NotebookPen} label="Trader Journal" tokens={tokens} />
-              <SidebarItem icon={FlaskConical} label="Backtesting Lab" tokens={tokens} />
-              <SidebarItem icon={Brain} label="Psicologia" tokens={tokens} />
-              <SidebarItem icon={BookOpen} label="Revisão & lições" tokens={tokens} />
-              <SidebarItem icon={Camera} label="Prints do registro" tokens={tokens} />
-              <SidebarItem icon={Briefcase} label="Contas & mesas" tokens={tokens} />
-            </div>
-
-            <div className={cn("mt-6 rounded-3xl border p-4", tokens.softPanel)}>
-              <div className="mb-3 flex items-center gap-2">
-                <Gauge className="h-4 w-4" />
-                <p className="text-sm font-semibold">Resumo operacional</p>
-              </div>
-              <div className={cn("space-y-3 text-sm", tokens.subtle)}>
-                <div className="flex items-center justify-between">
-                  <span>Sessão principal</span>
-                  <Badge className="rounded-full">Londres / NY</Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Setup dominante</span>
-                  <span className="font-medium">Liquidez + confirmação</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Risco padrão</span>
-                  <span className="font-medium">0,5%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Modo visual</span>
-                  <span className="font-medium">{darkMode ? "Dark" : "Light"}</span>
-                </div>
-              </div>
-            </div>
-          </motion.aside>
-
-          <main className="space-y-6">
-            <motion.section
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={cn("overflow-hidden rounded-[30px] border", tokens.hero)}
-            >
-              <div className="grid gap-6 p-6 lg:grid-cols-[1.3fr_0.9fr] lg:p-8">
+        <section class="cols-hero">
+          <article class="card">
+            <div class="section-head">
+              <div class="section-title-wrap">
+                <div class="icon-soft">✎</div>
                 <div>
-                  <Badge className="mb-4 rounded-full bg-white/10 text-white hover:bg-white/10">Preview premium</Badge>
-                  <h2 className="max-w-2xl text-3xl font-semibold tracking-tight lg:text-4xl">
-                    Seu workspace de trading com journal, revisão e laboratório de backtesting.
-                  </h2>
-                  <p className={cn("mt-3 max-w-2xl text-sm leading-6 lg:text-base", tokens.strongSubtle)}>
-                    Estruturado para registrar operação, validar setups, revisar comportamento e acompanhar contas em uma experiência mais limpa, premium e escalável.
-                  </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <Button className={cn("rounded-2xl", tokens.accentSolid)}>Novo registro</Button>
-                    <Button variant="outline" className={cn("rounded-2xl", tokens.outlineBtn)}>
-                      Ver performance
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {summaryCards.map((card) => {
-                    const Icon = card.icon;
-                    return (
-                      <div key={card.label} className={cn("rounded-3xl p-4 backdrop-blur-sm", tokens.heroCard)}>
-                        <div className="mb-6 flex items-center justify-between">
-                          <span className="text-sm text-slate-300">{card.label}</span>
-                          <div className="rounded-2xl bg-white/10 p-2">
-                            <Icon className="h-4 w-4" />
-                          </div>
-                        </div>
-                        <div className="text-2xl font-semibold">{card.value}</div>
-                        <p className="mt-2 text-xs text-slate-300/80">{card.helper}</p>
-                      </div>
-                    );
-                  })}
+                  <h3>Trader Journal</h3>
+                  <p>Registro principal do dia com narrativa, execução e resultado.</p>
                 </div>
               </div>
-            </motion.section>
+              <button class="outline-btn">Ver detalhes</button>
+            </div>
 
-            <section className="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
-              <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-                <Card className={cn("rounded-[28px] border", tokens.panel)}>
-                  <CardHeader className="space-y-4">
-                    <SectionHeader
-                      icon={NotebookPen}
-                      title="Trader Journal"
-                      description="Registro principal do dia com narrativa, execução e resultado."
-                      tokens={tokens}
-                    />
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Data</label>
-                        <Input defaultValue={journalDate} className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Conta / Mesa</label>
-                        <Input defaultValue="FTMO Swing" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Ativo</label>
-                        <Input defaultValue="EURUSD" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Status</label>
-                        <Input defaultValue="Win" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                    </div>
+            <div class="field-grid-4">
+              <div class="field">
+                <label>Data</label>
+                <input class="control" id="journalDate" />
+              </div>
+              <div class="field">
+                <label>Conta / Mesa</label>
+                <input class="control" value="FTMO Swing" />
+              </div>
+              <div class="field">
+                <label>Ativo</label>
+                <input class="control" value="EURUSD" />
+              </div>
+              <div class="field">
+                <label>Status</label>
+                <input class="control" value="Win" />
+              </div>
+            </div>
 
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Direção</label>
-                        <Input defaultValue="Buy" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Setup</label>
-                        <Input defaultValue="Sweep + confirmação M5" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Timeframe</label>
-                        <Input defaultValue="M5 / H1" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Resultado ($)</label>
-                        <Input defaultValue="320" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                    </div>
+            <div class="field-grid-4" style="margin-top:14px;">
+              <div class="field">
+                <label>Direção</label>
+                <input class="control" value="Buy" />
+              </div>
+              <div class="field">
+                <label>Setup</label>
+                <input class="control" value="Sweep + confirmação M5" />
+              </div>
+              <div class="field">
+                <label>Timeframe</label>
+                <input class="control" value="M5 / H1" />
+              </div>
+              <div class="field">
+                <label>Resultado ($)</label>
+                <input class="control" value="320" />
+              </div>
+            </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Narrativa / bias</label>
-                      <Textarea
-                        defaultValue="Deslocamento favorável após varrer liquidez da mínima asiática, confirmação na abertura de Londres e continuidade até o alvo principal."
-                        className={cn("min-h-[120px] rounded-2xl", tokens.input)}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+            <div class="field" style="margin-top:14px;">
+              <label>Narrativa / bias</label>
+              <textarea class="textarea">Deslocamento favorável após varrer liquidez da mínima asiática, confirmação na abertura de Londres e continuidade até o alvo principal.</textarea>
+            </div>
+          </article>
 
-              <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                <Card className={cn("rounded-[28px] border", tokens.panel)}>
-                  <CardHeader>
-                    <SectionHeader
-                      icon={CalendarDays}
-                      title="Registro recente"
-                      description="Últimos dias para consulta rápida."
-                      tokens={tokens}
-                    />
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {recentEntries.map((entry) => (
-                      <div key={`${entry.date}-${entry.asset}`} className={cn("flex items-center justify-between rounded-2xl border px-4 py-3", tokens.softPanel)}>
-                        <div>
-                          <p className="text-sm font-semibold">{entry.asset}</p>
-                          <p className={cn("text-xs", tokens.subtle)}>{entry.date} · {entry.rr}</p>
-                        </div>
-                        <div className="text-right">
-                          <Badge className="rounded-full">{entry.status}</Badge>
-                          <p className="mt-2 text-sm font-semibold">{entry.result}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-
-                <Card className={cn("rounded-[28px] border", tokens.panel)}>
-                  <CardHeader>
-                    <SectionHeader
-                      icon={Target}
-                      title="Foco do dia"
-                      description="Lembrete operacional objetivo para manter consistência."
-                      tokens={tokens}
-                    />
-                  </CardHeader>
-                  <CardContent>
-                    <div className={cn("rounded-3xl border p-5", darkMode ? "border-white/10 bg-slate-950 text-white" : "border-slate-900 bg-slate-950 text-white")}>
-                      <p className="text-sm leading-6 text-slate-300">
-                        Operar apenas nos horários de maior interesse institucional, evitar antecipação e validar direção com contexto antes da execução.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </section>
-
-            <motion.section initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-              <Card className={cn("rounded-[28px] border", tokens.panel)}>
-                <CardHeader>
-                  <SectionHeader
-                    icon={FlaskConical}
-                    title="Backtesting Lab"
-                    description="Módulo dedicado para validar setups, hipóteses e expectativa estatística."
-                    tokens={tokens}
-                  />
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Setup</label>
-                      <Input defaultValue="Sweep + confirmação" className={cn("rounded-2xl", tokens.input)} />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Ativo</label>
-                      <Input defaultValue="EURUSD" className={cn("rounded-2xl", tokens.input)} />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Timeframe</label>
-                      <Input defaultValue="M5" className={cn("rounded-2xl", tokens.input)} />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Sessão</label>
-                      <Input defaultValue="Londres" className={cn("rounded-2xl", tokens.input)} />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Amostras</label>
-                      <Input defaultValue="36" className={cn("rounded-2xl", tokens.input)} />
-                    </div>
-                  </div>
-
-                  <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
-                        <div className={cn("rounded-[24px] border p-4", tokens.softPanel)}>
-                          <p className={cn("text-xs", tokens.subtle)}>Win rate</p>
-                          <p className="mt-2 text-xl font-semibold">69%</p>
-                        </div>
-                        <div className={cn("rounded-[24px] border p-4", tokens.softPanel)}>
-                          <p className={cn("text-xs", tokens.subtle)}>RR médio</p>
-                          <p className="mt-2 text-xl font-semibold">1:2.7</p>
-                        </div>
-                        <div className={cn("rounded-[24px] border p-4", tokens.softPanel)}>
-                          <p className={cn("text-xs", tokens.subtle)}>Expectativa</p>
-                          <p className="mt-2 text-xl font-semibold">+0.54R</p>
-                        </div>
-                        <div className={cn("rounded-[24px] border p-4", tokens.softPanel)}>
-                          <p className={cn("text-xs", tokens.subtle)}>Status</p>
-                          <p className="mt-2 text-xl font-semibold">Validado</p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Hipótese / contexto</label>
-                        <Textarea
-                          defaultValue="Quando o preço varre liquidez asiática e entrega confirmação na abertura de Londres, o setup tende a apresentar melhor continuidade em dias com viés macro alinhado."
-                          className={cn("min-h-[120px] rounded-2xl", tokens.input)}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      {backtestRows.map((row) => (
-                        <div key={`${row.setup}-${row.asset}`} className={cn("rounded-[24px] border p-4", tokens.softPanel)}>
-                          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <p className="font-semibold">{row.setup}</p>
-                                <Badge className="rounded-full">{row.asset}</Badge>
-                              </div>
-                              <p className={cn("mt-1 text-sm", tokens.subtle)}>
-                                {row.samples} amostras · expectativa {row.expectancy}
-                              </p>
-                            </div>
-                            <div className="grid grid-cols-2 gap-2 text-sm md:min-w-[220px]">
-                              <div>
-                                <p className={tokens.subtle}>Win rate</p>
-                                <p className="font-semibold">{row.winRate}</p>
-                              </div>
-                              <div>
-                                <p className={tokens.subtle}>Veredito</p>
-                                <p className="font-semibold">{row.verdict}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.section>
-
-            <section className="grid gap-6 lg:grid-cols-2">
-              <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-                <Card className={cn("h-full rounded-[28px] border", tokens.panel)}>
-                  <CardHeader>
-                    <SectionHeader
-                      icon={Brain}
-                      title="Emocional e psicológico"
-                      description="Área para comportamento, clareza mental e observação emocional."
-                      tokens={tokens}
-                    />
-                  </CardHeader>
-                  <CardContent className="space-y-5">
-                    <div>
-                      <p className="mb-3 text-sm font-medium">Comportamentos monitorados</p>
-                      <div className="flex flex-wrap gap-2">
-                        {behaviors.map((item) => (
-                          <button
-                            key={item}
-                            onClick={() => setSelectedBehavior(item)}
-                            className={cn(
-                              "rounded-full border px-3 py-2 text-sm transition",
-                              selectedBehavior === item ? tokens.pillActive : tokens.pill,
-                            )}
-                          >
-                            {item}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Comportamento em destaque</label>
-                        <Input value={selectedBehavior} readOnly className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Nível emocional</label>
-                        <Input defaultValue="Controlado / neutro" className={cn("rounded-2xl", tokens.input)} />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Observação emocional</label>
-                      <Textarea
-                        defaultValue="Maior clareza após aguardar confirmação. Sem ansiedade relevante durante a execução."
-                        className={cn("min-h-[120px] rounded-2xl", tokens.input)}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-                <Card className={cn("h-full rounded-[28px] border", tokens.panel)}>
-                  <CardHeader>
-                    <SectionHeader
-                      icon={BookOpen}
-                      title="Execução e revisão"
-                      description="Notas táticas, lições e fechamento de aprendizado."
-                      tokens={tokens}
-                    />
-                  </CardHeader>
-                  <CardContent className="space-y-5">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Anotações</label>
-                      <Textarea
-                        defaultValue="Execução alinhada com o plano. Entrada após deslocamento confirmou viés intraday sem necessidade de refinamento extra."
-                        className={cn("min-h-[110px] rounded-2xl", tokens.input)}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Lição / aprendizado</label>
-                      <Textarea
-                        defaultValue="Quando a narrativa macro e a liquidez intraday alinham, o trade fica mais simples. Não forçar reentrada após alvo principal."
-                        className={cn("min-h-[110px] rounded-2xl", tokens.input)}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </section>
-
-            <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-              <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-                <Card className={cn("h-full rounded-[28px] border", tokens.panel)}>
-                  <CardHeader>
-                    <SectionHeader
-                      icon={Camera}
-                      title="Prints do registro"
-                      description="Área visual para anexar imagens da execução e da revisão."
-                      tokens={tokens}
-                    />
-                  </CardHeader>
-                  <CardContent>
-                    <div className={cn("flex min-h-[300px] flex-col items-center justify-center rounded-[28px] border border-dashed p-8 text-center", tokens.dropzone)}>
-                      <div className={cn("mb-4 rounded-3xl p-4 shadow-sm", darkMode ? "bg-white/5" : "bg-white")}>
-                        <Camera className="h-8 w-8" />
-                      </div>
-                      <h4 className="text-base font-semibold">Dropzone premium para prints</h4>
-                      <p className={cn("mt-2 max-w-md text-sm leading-6", tokens.subtle)}>
-                        Espaço pensado para screenshots de entrada, contexto e fechamento. Depois podemos transformar em galeria, comparação e zoom por operação.
-                      </p>
-                      <Button className={cn("mt-5 rounded-2xl", tokens.accentSolid)}>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Adicionar imagens
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-                <Card className={cn("h-full rounded-[28px] border", tokens.panel)}>
-                  <CardHeader>
-                    <SectionHeader
-                      icon={Briefcase}
-                      title="Contas & mesas"
-                      description="Gestão visual de contas, fases, progresso e status."
-                      tokens={tokens}
-                    />
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {accountRows.map((row) => (
-                      <div key={row.name} className={cn("rounded-[24px] border p-4", tokens.softPanel)}>
-                        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="font-semibold">{row.name}</p>
-                              <Badge className="rounded-full">{row.category}</Badge>
-                            </div>
-                            <p className={cn("mt-1 text-sm", tokens.subtle)}>
-                              {row.phase} · {row.status}
-                            </p>
-                          </div>
-                          <div className="grid grid-cols-2 gap-3 md:w-[280px]">
-                            <div className={cn("rounded-2xl border p-3", darkMode ? "border-white/10 bg-black/20" : "border-white bg-white")}>
-                              <p className={cn("text-xs", tokens.subtle)}>Saldo</p>
-                              <p className="mt-1 font-semibold">{row.balance}</p>
-                            </div>
-                            <div className={cn("rounded-2xl border p-3", darkMode ? "border-white/10 bg-black/20" : "border-white bg-white")}>
-                              <p className={cn("text-xs", tokens.subtle)}>Progresso</p>
-                              <p className="mt-1 font-semibold">{row.progress}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </section>
-
-            <motion.section initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-              <Card className={cn("rounded-[28px] border", tokens.panel)}>
-                <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div style="display:grid; gap:24px;">
+            <article class="card">
+              <div class="section-head">
+                <div class="section-title-wrap">
+                  <div class="icon-soft">◷</div>
                   <div>
-                    <CardTitle className="text-xl">Direção visual da próxima fase</CardTitle>
-                    <CardDescription className={tokens.subtle}>
-                      Essa versão já abre caminho para filtros, calendário, ranking de setups, relatórios por ativo e histórico de validação estatística.
-                    </CardDescription>
+                    <h3>Registro recente</h3>
+                    <p>Últimos dias para consulta rápida.</p>
                   </div>
-                  <div className="flex gap-3">
-                    <Button variant="outline" className={cn("rounded-2xl", tokens.outlineBtn)}>Ajustar layout</Button>
-                    <Button className={cn("rounded-2xl", tokens.accentSolid)}>Preparar versão HTML</Button>
+                </div>
+              </div>
+
+              <div class="list-stack">
+                <div class="list-item">
+                  <div>
+                    <p><strong>EURUSD</strong></p>
+                    <p class="list-meta">08 Abr · 1:3</p>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-4 md:grid-cols-3">
-                    <div className={cn("rounded-[24px] border p-5", tokens.softPanel)}>
-                      <div className="mb-3 flex items-center gap-2">
-                        <FolderKanban className="h-4 w-4" />
-                        <p className="font-semibold">Estrutura</p>
-                      </div>
-                      <p className={cn("text-sm leading-6", tokens.subtle)}>
-                        Navegação mais clara, hierarquia melhor e blocos mais bem separados para reduzir ruído visual.
-                      </p>
+                  <div style="text-align:right;">
+                    <span class="result-badge">Win</span>
+                    <p style="margin-top:10px;"><strong>+$320</strong></p>
+                  </div>
+                </div>
+                <div class="list-item">
+                  <div>
+                    <p><strong>GBPUSD</strong></p>
+                    <p class="list-meta">07 Abr · 1:1</p>
+                  </div>
+                  <div style="text-align:right;">
+                    <span class="result-badge">Break-even</span>
+                    <p style="margin-top:10px;"><strong>$0</strong></p>
+                  </div>
+                </div>
+                <div class="list-item">
+                  <div>
+                    <p><strong>XAUUSD</strong></p>
+                    <p class="list-meta">06 Abr · 1:2</p>
+                  </div>
+                  <div style="text-align:right;">
+                    <span class="result-badge">Loss</span>
+                    <p style="margin-top:10px;"><strong>-$180</strong></p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="section-head">
+                <div class="section-title-wrap">
+                  <div class="icon-soft">◎</div>
+                  <div>
+                    <h3>Foco do dia</h3>
+                    <p>Lembrete operacional objetivo para manter consistência.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="focus-box">
+                <p>Operar apenas nos horários de maior interesse institucional, evitar antecipação e validar direção com contexto antes da execução.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div class="section-title-wrap">
+              <div class="icon-soft">⚗</div>
+              <div>
+                <h3>Backtesting Lab</h3>
+                <p>Módulo dedicado para validar setups, hipóteses e expectativa estatística.</p>
+              </div>
+            </div>
+            <button class="outline-btn">Ver detalhes</button>
+          </div>
+
+          <div class="field-grid-5">
+            <div class="field">
+              <label>Setup</label>
+              <input class="control" value="Sweep + confirmação" />
+            </div>
+            <div class="field">
+              <label>Ativo</label>
+              <input class="control" value="EURUSD" />
+            </div>
+            <div class="field">
+              <label>Timeframe</label>
+              <input class="control" value="M5" />
+            </div>
+            <div class="field">
+              <label>Sessão</label>
+              <input class="control" value="Londres" />
+            </div>
+            <div class="field">
+              <label>Amostras</label>
+              <input class="control" value="36" />
+            </div>
+          </div>
+
+          <div class="grid-split" style="margin-top:18px;">
+            <div style="display:grid; gap:14px;">
+              <div class="metric-grid">
+                <div class="metric-card">
+                  <div class="label">Win rate</div>
+                  <div class="value">69%</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">RR médio</div>
+                  <div class="value">1:2.7</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">Expectativa</div>
+                  <div class="value">+0.54R</div>
+                </div>
+                <div class="metric-card">
+                  <div class="label">Status</div>
+                  <div class="value">Validado</div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Hipótese / contexto</label>
+                <textarea class="textarea">Quando o preço varre liquidez asiática e entrega confirmação na abertura de Londres, o setup tende a apresentar melhor continuidade em dias com viés macro alinhado.</textarea>
+              </div>
+            </div>
+
+            <div class="backtest-stack">
+              <div class="backtest-item">
+                <div class="backtest-top">
+                  <div>
+                    <div class="row-badges">
+                      <strong>Sweep + confirmação</strong>
+                      <span class="mini-badge">EURUSD</span>
                     </div>
-                    <div className={cn("rounded-[24px] border p-5", tokens.softPanel)}>
-                      <div className="mb-3 flex items-center gap-2">
-                        <Clock3 className="h-4 w-4" />
-                        <p className="font-semibold">Fluxo</p>
-                      </div>
-                      <p className={cn("text-sm leading-6", tokens.subtle)}>
-                        O fluxo ficou mais parecido com um software premium, com entrada rápida, leitura fácil e revisão natural.
-                      </p>
+                    <p class="backtest-meta">36 amostras · expectativa +0.54R</p>
+                  </div>
+                  <div class="backtest-metrics">
+                    <div class="backtest-mini">
+                      <div class="label">Win rate</div>
+                      <div class="value">69%</div>
                     </div>
-                    <div className={cn("rounded-[24px] border p-5", tokens.softPanel)}>
-                      <div className="mb-3 flex items-center gap-2">
-                        <Sparkles className="h-4 w-4" />
-                        <p className="font-semibold">Expansão</p>
-                      </div>
-                      <p className={cn("text-sm leading-6", tokens.subtle)}>
-                        A base visual já suporta evolução futura para autenticação, banco de dados, métricas e histórico avançado.
-                      </p>
+                    <div class="backtest-mini">
+                      <div class="label">Veredito</div>
+                      <div class="value">Validado</div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.section>
-          </main>
-        </div>
-      </div>
+                </div>
+              </div>
+
+              <div class="backtest-item">
+                <div class="backtest-top">
+                  <div>
+                    <div class="row-badges">
+                      <strong>Retorno ao FVG</strong>
+                      <span class="mini-badge">GBPUSD</span>
+                    </div>
+                    <p class="backtest-meta">22 amostras · expectativa +0.22R</p>
+                  </div>
+                  <div class="backtest-metrics">
+                    <div class="backtest-mini">
+                      <div class="label">Win rate</div>
+                      <div class="value">59%</div>
+                    </div>
+                    <div class="backtest-mini">
+                      <div class="label">Veredito</div>
+                      <div class="value">Em ajuste</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="backtest-item">
+                <div class="backtest-top">
+                  <div>
+                    <div class="row-badges">
+                      <strong>Reversal NY AM</strong>
+                      <span class="mini-badge">XAUUSD</span>
+                    </div>
+                    <p class="backtest-meta">17 amostras · expectativa -0.08R</p>
+                  </div>
+                  <div class="backtest-metrics">
+                    <div class="backtest-mini">
+                      <div class="label">Win rate</div>
+                      <div class="value">47%</div>
+                    </div>
+                    <div class="backtest-mini">
+                      <div class="label">Veredito</div>
+                      <div class="value">Fraco</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid-two">
+          <article class="card">
+            <div class="section-head">
+              <div class="section-title-wrap">
+                <div class="icon-soft">◎</div>
+                <div>
+                  <h3>Emocional e psicológico</h3>
+                  <p>Área para comportamento, clareza mental e observação emocional.</p>
+                </div>
+              </div>
+              <button class="outline-btn">Ver detalhes</button>
+            </div>
+
+            <p style="margin:0 0 12px; font-size:14px; font-weight:600;">Comportamentos monitorados</p>
+            <div class="behavior-pills">
+              <button class="pill-btn active" data-behavior="Paciência na abertura de NY">Paciência na abertura de NY</button>
+              <button class="pill-btn" data-behavior="Respeito ao stop">Respeito ao stop</button>
+              <button class="pill-btn" data-behavior="Execução limpa após confirmação">Execução limpa após confirmação</button>
+              <button class="pill-btn" data-behavior="Evitar overtrading em consolidação">Evitar overtrading em consolidação</button>
+            </div>
+
+            <div class="grid-two" style="gap:14px;">
+              <div class="field">
+                <label>Comportamento em destaque</label>
+                <input class="control" id="behaviorInput" value="Paciência na abertura de NY" readonly />
+              </div>
+              <div class="field">
+                <label>Nível emocional</label>
+                <input class="control" value="Controlado / neutro" />
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:14px;">
+              <label>Observação emocional</label>
+              <textarea class="textarea">Maior clareza após aguardar confirmação. Sem ansiedade relevante durante a execução.</textarea>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-head">
+              <div class="section-title-wrap">
+                <div class="icon-soft">☰</div>
+                <div>
+                  <h3>Execução e revisão</h3>
+                  <p>Notas táticas, lições e fechamento de aprendizado.</p>
+                </div>
+              </div>
+              <button class="outline-btn">Ver detalhes</button>
+            </div>
+
+            <div class="field">
+              <label>Anotações</label>
+              <textarea class="textarea" style="min-height:110px;">Execução alinhada com o plano. Entrada após deslocamento confirmou viés intraday sem necessidade de refinamento extra.</textarea>
+            </div>
+
+            <div class="field" style="margin-top:14px;">
+              <label>Lição / aprendizado</label>
+              <textarea class="textarea" style="min-height:110px;">Quando a narrativa macro e a liquidez intraday alinham, o trade fica mais simples. Não forçar reentrada após alvo principal.</textarea>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid-split">
+          <article class="card">
+            <div class="section-head">
+              <div class="section-title-wrap">
+                <div class="icon-soft">▣</div>
+                <div>
+                  <h3>Prints do registro</h3>
+                  <p>Área visual para anexar imagens da execução e da revisão.</p>
+                </div>
+              </div>
+              <button class="outline-btn">Ver detalhes</button>
+            </div>
+
+            <div class="dropzone">
+              <div>
+                <div class="drop-icon">⬒</div>
+                <h3 style="margin:0;">Dropzone premium para prints</h3>
+                <p>Espaço pensado para screenshots de entrada, contexto e fechamento. Depois podemos transformar em galeria, comparação e zoom por operação.</p>
+                <div class="button-row" style="justify-content:center;">
+                  <button class="btn btn-primary">＋ Adicionar imagens</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-head">
+              <div class="section-title-wrap">
+                <div class="icon-soft">◬</div>
+                <div>
+                  <h3>Contas & mesas</h3>
+                  <p>Gestão visual de contas, fases, progresso e status.</p>
+                </div>
+              </div>
+              <button class="outline-btn">Ver detalhes</button>
+            </div>
+
+            <div class="account-stack">
+              <div class="account-item">
+                <div class="account-top">
+                  <div>
+                    <div class="row-badges">
+                      <strong>FTMO Swing</strong>
+                      <span class="mini-badge">Mesa</span>
+                    </div>
+                    <p class="account-meta">Fase 2 · Ativa</p>
+                  </div>
+                  <div class="account-metrics">
+                    <div class="account-mini">
+                      <div class="label">Saldo</div>
+                      <div class="value">$100.000</div>
+                    </div>
+                    <div class="account-mini">
+                      <div class="label">Progresso</div>
+                      <div class="value">64%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="account-item">
+                <div class="account-top">
+                  <div>
+                    <div class="row-badges">
+                      <strong>Conta Pessoal</strong>
+                      <span class="mini-badge">Conta</span>
+                    </div>
+                    <p class="account-meta">Livre · Ativa</p>
+                  </div>
+                  <div class="account-metrics">
+                    <div class="account-mini">
+                      <div class="label">Saldo</div>
+                      <div class="value">$12.500</div>
+                    </div>
+                    <div class="account-mini">
+                      <div class="label">Progresso</div>
+                      <div class="value">—</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="account-item">
+                <div class="account-top">
+                  <div>
+                    <div class="row-badges">
+                      <strong>Funding P1</strong>
+                      <span class="mini-badge">Mesa</span>
+                    </div>
+                    <p class="account-meta">Fase 1 · Observação</p>
+                  </div>
+                  <div class="account-metrics">
+                    <div class="account-mini">
+                      <div class="label">Saldo</div>
+                      <div class="value">$50.000</div>
+                    </div>
+                    <div class="account-mini">
+                      <div class="label">Progresso</div>
+                      <div class="value">38%</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div class="section-title-wrap">
+              <div class="icon-soft">✦</div>
+              <div>
+                <h3>Direção visual da próxima fase</h3>
+                <p>Essa versão já abre caminho para filtros, calendário, ranking de setups, relatórios por ativo e histórico de validação estatística.</p>
+              </div>
+            </div>
+            <div class="chip-row">
+              <button class="outline-btn">Ajustar layout</button>
+              <button class="btn btn-primary">Preparar versão HTML</button>
+            </div>
+          </div>
+
+          <div class="grid-three">
+            <div class="phase-card">
+              <h4>Estrutura</h4>
+              <p>Navegação mais clara, hierarquia melhor e blocos mais bem separados para reduzir ruído visual.</p>
+            </div>
+            <div class="phase-card">
+              <h4>Fluxo</h4>
+              <p>O fluxo ficou mais parecido com um software premium, com entrada rápida, leitura fácil e revisão natural.</p>
+            </div>
+            <div class="phase-card">
+              <h4>Expansão</h4>
+              <p>A base visual já suporta evolução futura para autenticação, banco de dados, métricas e histórico avançado.</p>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
-  );
-}
+  </div>
+
+  <script>
+    const themeMeta = {
+      institutional: { label: "Mesa proprietária", small: "Institutional" },
+      aurora: { label: "Premium vibrante", small: "Aurora" },
+      graphite: { label: "Luxo minimalista", small: "Graphite" }
+    };
+
+    const body = document.body;
+    const themeButtons = document.querySelectorAll(".theme-btn");
+    const modeToggle = document.getElementById("modeToggle");
+    const themeBadge = document.getElementById("themeBadge");
+    const brandSmall = document.getElementById("brandSmall");
+    const modeLabel = document.getElementById("modeLabel");
+    const journalDate = document.getElementById("journalDate");
+    const behaviorInput = document.getElementById("behaviorInput");
+    const behaviorButtons = document.querySelectorAll(".pill-btn");
+
+    let currentTheme = "institutional";
+    let darkMode = false;
+
+    function applyTheme() {
+      body.className = `theme-${currentTheme} ${darkMode ? "mode-dark" : "mode-light"}`;
+      themeButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.theme === currentTheme));
+      themeBadge.textContent = themeMeta[currentTheme].label;
+      brandSmall.textContent = themeMeta[currentTheme].small;
+      modeLabel.textContent = darkMode ? "Dark" : "Light";
+      modeToggle.textContent = darkMode ? "☀️ Modo claro" : "🌙 Modo escuro";
+      modeToggle.classList.add("active");
+    }
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentTheme = btn.dataset.theme;
+        applyTheme();
+      });
+    });
+
+    modeToggle.addEventListener("click", () => {
+      darkMode = !darkMode;
+      applyTheme();
+    });
+
+    behaviorButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        behaviorButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        behaviorInput.value = btn.dataset.behavior;
+      });
+    });
+
+    try {
+      journalDate.value = new Date().toLocaleDateString("pt-BR");
+    } catch (e) {
+      journalDate.value = "09/04/2026";
+    }
+
+    applyTheme();
+  </script>
+</body>
+</html>
